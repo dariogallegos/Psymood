@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="Home"
+        />
+    <item
+        android:id="@+id/nav_plus"
+        android:icon="@drawable/ic_add_circle_outline"
+        android:title="Plus"/>
+
+    <item
+        android:id="@+id/nav_camera"
+        android:icon="@drawable/ic_camera"
+        android:title="Camera"/>
+    <item
+        android:id="@+id/nav_assignment"
+        android:icon="@drawable/ic_mic"
+        android:title="Assignment"/>
+</menu>

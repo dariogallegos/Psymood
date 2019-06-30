@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00b0ff</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
+    <color name="colorAccent">#00b0ff</color>
+    <color name="White">#ffffff</color>
+    <color name="GreyBackground">#f9f9fa</color>
+    <color name="GreyTitle">#3f4144</color>
+    <color name="Black">#000000</color>
+    <color name="PsymoodColor">#EEFB5B44</color>
+    <color name="GreyMedium">#9F9FA5</color>
+</resources>

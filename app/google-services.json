@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "988918104835",
+    "firebase_url": "https://psymood-c4c37.firebaseio.com",
+    "project_id": "psymood-c4c37",
+    "storage_bucket": "psymood-c4c37.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:988918104835:android:4e68f402cdbcd672",
+        "android_client_info": {
+          "package_name": "com.example.psymood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "988918104835-oi4dvm69rogup23c7ts1bl19cocgcap6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.psymood",
+            "certificate_hash": "d49afe0ecd87f33fb0ad84c411c070e2a4a30415"
+          }
+        },
+        {
+          "client_id": "988918104835-i0bp4g83epdrnppt1jqd5slsarnvocli.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvLn9UkLPp-eHJ9r9Wu3mJXUI-7uRhHdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "988918104835-i0bp4g83epdrnppt1jqd5slsarnvocli.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
