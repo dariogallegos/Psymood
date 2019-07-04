@@ -55,15 +55,6 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         });
 
 
-        /*FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -100,11 +91,13 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         Glide.with(this).load(currentUser.getPhotoUrl()).into(navUserPhoto);
     }
 
+    //flechita para atras para cerrar el menu lateral
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+
         } else {
             super.onBackPressed();
         }
@@ -139,7 +132,7 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+
 
         switch (item.getItemId()){
             case R.id.nav_home:
@@ -157,6 +150,9 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
                 startActivity(intent);
                 finish();
                 break;
+            case R.id.nav_map:
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_container,new HomeFragment()).commit();
+                break;
             default:
                 Toast.makeText(this,"Other opcion",Toast.LENGTH_SHORT).show();
         }
@@ -165,6 +161,7 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     private boolean onNavigationBottomItemSelected(MenuItem menuItem){
         Fragment selectFragment = null;
