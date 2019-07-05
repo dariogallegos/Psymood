@@ -4,11 +4,19 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.psymood.Activities.MyItemGroupAdapter;
+import com.example.psymood.Models.ItemData;
+import com.example.psymood.Models.ItemGroup;
 import com.example.psymood.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,21 +35,15 @@ public class ProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private OnFragmentInteractionListener mListener;
+    private RecyclerView recyclerViewGroups;
+    private List<ItemGroup> itemGroupList;
 
     public ProfileFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static ProfileFragment newInstance(String param1, String param2) {
         ProfileFragment fragment = new ProfileFragment();
@@ -61,11 +63,24 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+
+    //TODO INICIALIZAR AQUI EL RECYCLER VIEW.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        itemGroupList = new ArrayList<>();
+
+        recyclerViewGroups = view.findViewById(R.id.my_recycler_view);
+
+        recyclerViewGroups.setHasFixedSize(true);
+        recyclerViewGroups.setLayoutManager(new LinearLayoutManager(getContext()));
+        llenarLista();
+        MyItemGroupAdapter adapter=new MyItemGroupAdapter(getContext(),itemGroupList);
+        recyclerViewGroups.setAdapter(adapter);
+        return view;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -90,6 +105,22 @@ public class ProfileFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void llenarLista() {
+        List<ItemData> listItemData = new ArrayList<>();
+        listItemData.add(new ItemData("dario","dario"));
+        listItemData.add(new ItemData("dario","dario"));
+        listItemData.add(new ItemData("dario","dario"));
+        listItemData.add(new ItemData("dario","dario"));
+        listItemData.add(new ItemData("dario","dario"));
+
+
+        itemGroupList.add(new ItemGroup("titulo1",listItemData));
+        itemGroupList.add(new ItemGroup("titulo1",listItemData));
+        itemGroupList.add(new ItemGroup("titulo1",listItemData));
+        itemGroupList.add(new ItemGroup("titulo1",listItemData));
+        itemGroupList.add(new ItemGroup("titulo1",listItemData));
     }
 
     /**
