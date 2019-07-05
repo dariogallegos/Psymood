@@ -12,9 +12,10 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
+
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:background="@color/White">
         </android.support.v7.widget.Toolbar>
 
@@ -35,10 +36,10 @@
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_gravity="bottom"
         app:itemHorizontalTranslationEnabled="true"
-        app:itemIconSize="27dp"
+        app:itemIconSize="25dp"
         app:itemIconTint="@color/color_icons_bottom_nav"
         android:background="@color/GreyBackground"
         app:labelVisibilityMode="unlabeled"
