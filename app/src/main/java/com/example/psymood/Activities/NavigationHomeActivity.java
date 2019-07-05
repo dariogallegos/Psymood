@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,9 +23,14 @@ import com.bumptech.glide.Glide;
 import com.example.psymood.Fragments.HomeFragment;
 import com.example.psymood.Fragments.ProfileFragment;
 import com.example.psymood.Fragments.SettingsFragment;
+import com.example.psymood.Models.ItemData;
+import com.example.psymood.Models.ItemGroup;
 import com.example.psymood.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NavigationHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -162,7 +169,6 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         return true;
     }
 
-
     private boolean onNavigationBottomItemSelected(MenuItem menuItem){
         Fragment selectFragment = null;
         switch (menuItem.getItemId()){
@@ -183,4 +189,5 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_container,selectFragment).commit();
         return true;
     }
+
 }
