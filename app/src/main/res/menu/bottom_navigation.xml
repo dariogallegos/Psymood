@@ -7,16 +7,16 @@
         android:title="Home"
         />
     <item
-        android:id="@+id/nav_plus"
+        android:id="@+id/nav_add"
         android:icon="@drawable/ic_add_circle_outline"
-        android:title="Plus"/>
+        android:title="Add"/>
 
     <item
         android:id="@+id/nav_camera"
         android:icon="@drawable/ic_camera"
         android:title="Camera"/>
     <item
-        android:id="@+id/nav_assignment"
+        android:id="@+id/nav_audio"
         android:icon="@drawable/ic_mic"
-        android:title="Assignment"/>
+        android:title="Audio"/>
 </menu>

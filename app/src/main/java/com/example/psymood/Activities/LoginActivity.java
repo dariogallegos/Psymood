@@ -1,7 +1,6 @@
 package com.example.psymood.Activities;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -68,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
     private void signIn(String mail, String password) {
         mAuth.signInWithEmailAndPassword(mail,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+            public void onComplete(Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     updateUI();
                 }

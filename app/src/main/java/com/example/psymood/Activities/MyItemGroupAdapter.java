@@ -1,7 +1,6 @@
 package com.example.psymood.Activities;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,11 +12,12 @@ import com.example.psymood.Models.ItemData;
 import com.example.psymood.Models.ItemGroup;
 import com.example.psymood.R;
 
+
 import java.util.List;
 
 public class MyItemGroupAdapter extends RecyclerView.Adapter<MyItemGroupAdapter.MyViewHolder> {
 
-    private Context context;
+    private Context     context;
     private List<ItemGroup> itemGroupList;
 
     public MyItemGroupAdapter(Context context, List<ItemGroup> itemGroupList) {
@@ -25,16 +25,15 @@ public class MyItemGroupAdapter extends RecyclerView.Adapter<MyItemGroupAdapter.
         this.itemGroupList = itemGroupList;
     }
 
-    @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cell_group, viewGroup , false);
         MyViewHolder viewHolder = new MyViewHolder(v);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(MyViewHolder myViewHolder, int i) {
         String item_tittle = itemGroupList.get(i).getTitle();
         myViewHolder.item_title.setText(item_tittle);
 
@@ -58,7 +57,7 @@ public class MyItemGroupAdapter extends RecyclerView.Adapter<MyItemGroupAdapter.
         RecyclerView recyclerView_itemList;
 
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(View itemView) {
             super(itemView);
             item_title = itemView.findViewById(R.id.item_title);
             recyclerView_itemList = itemView.findViewById(R.id.recyclerView_itemGrop);

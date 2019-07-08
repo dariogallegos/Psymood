@@ -17,7 +17,7 @@
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:layout_gravity="center"
-            android:src="@drawable/dario"/>
+            app:srcCompat="@drawable/dario"/>
         <TextView
             android:id="@+id/itemText"
             android:layout_width="wrap_content"

@@ -2,11 +2,8 @@ package com.example.psymood.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,17 +17,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
+import com.example.psymood.Fragments.AudioFragment;
 import com.example.psymood.Fragments.HomeFragment;
 import com.example.psymood.Fragments.ProfileFragment;
 import com.example.psymood.Fragments.SettingsFragment;
-import com.example.psymood.Models.ItemData;
-import com.example.psymood.Models.ItemGroup;
 import com.example.psymood.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class NavigationHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -56,7 +50,7 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
                 return onNavigationBottomItemSelected(menuItem);
             }
         });
@@ -95,10 +89,12 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         navUserName.setText(currentUser.getDisplayName());
 
         //Usremos Glide para cargar la photo.
-        Glide.with(this).load(currentUser.getPhotoUrl()).into(navUserPhoto);
+
+        //Glide.with(this).load(currentUser.getPhotoUrl()).into(navUserPhoto);
+        Glide.with(this).load(currentUser.getPhotoUrl()).placeholder(R.drawable.support).into(navUserPhoto);
     }
 
-    //flechita para atras para cerrar el menu lateral
+    //flechita de adnroid para atras para cerrar el menu lateral
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -117,7 +113,6 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         getMenuInflater().inflate(R.menu.navigation_home, menu);
         return true;
     }
-
 
     //Menu de opciones
     @Override
@@ -175,14 +170,14 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
             case R.id.nav_home:
                 selectFragment = new HomeFragment();
                 break;
+            case R.id.nav_add:
+                selectFragment = new ProfileFragment();
+                break;
             case R.id.nav_camera:
                 selectFragment = new SettingsFragment();
                 break;
-            case R.id.nav_plus:
-                selectFragment = new ProfileFragment();
-                break;
-            case R.id.nav_assignment:
-                selectFragment = new HomeFragment();
+            case R.id.nav_audio:
+                selectFragment = new AudioFragment();
                 break;
         }
 

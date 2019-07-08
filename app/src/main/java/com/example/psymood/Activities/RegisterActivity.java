@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +26,6 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 public class RegisterActivity extends AppCompatActivity {
 
     private ImageView regUserPhoto;
@@ -93,7 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+            public void onComplete(Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     //user account created successfully
                     showMessage("Cuenta creada");
@@ -132,7 +129,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 .build();
                         currentUser.updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+                            public void onComplete(Task<Void> task) {
                                 if(task.isSuccessful()){
                                     //user info update sucessfully
                                     showMessage("Register Complete");
@@ -174,12 +171,12 @@ public class RegisterActivity extends AppCompatActivity {
     private void openGallery() {
         //TODO: open gallery intent and wait for user pick an image
         Intent intentGallery = new Intent(Intent.ACTION_GET_CONTENT);
-        intentGallery.setType("image/*");
+        intentGallery.setType("+image/*");
         startActivityForResult(intentGallery, REQUESTCODE);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && requestCode == REQUESTCODE && data != null){
             //  El usuario a seleccionado una imagen correctamente
