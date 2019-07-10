@@ -6,7 +6,7 @@
     tools:context=".Fragments.ProfileFragment">
 
     <!-- TODO: Update blank fragment layout NOTA: EL PADDING BOTTOM 70dp es para que el ultimo item del recyclerView Group se vea perfectamente-->
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
