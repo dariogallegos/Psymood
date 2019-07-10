@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -31,10 +31,21 @@ public class RegisterActivity extends AppCompatActivity {
     private ImageView regUserPhoto;
     static int PERMISSIONCODE = 1;
     static int REQUESTCODE = 1;
+
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+
+
+
     Uri pickedImageUri;
     private EditText userName, userMail, userPassword, userConfirm;
     private Button buttonRegister;
     private FirebaseAuth mAuth;
+
+
 
 
 
@@ -156,12 +167,13 @@ public class RegisterActivity extends AppCompatActivity {
     //Method to check permission and load a user picture
     private void checkAndRequestForPermission() {
 
+
         if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             if(ActivityCompat.shouldShowRequestPermissionRationale(RegisterActivity.this ,Manifest.permission.READ_EXTERNAL_STORAGE)){
                 Toast.makeText(RegisterActivity.this,"Permitir a Psymood acceder a la galeria?",Toast.LENGTH_SHORT).show();
             }
             else{
-                ActivityCompat.requestPermissions(RegisterActivity.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONCODE);
+                ActivityCompat.requestPermissions(RegisterActivity.this,PERMISSIONS_STORAGE, PERMISSIONCODE);
             }
         }
         else{
