@@ -9,6 +9,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,7 +31,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private ImageView regUserPhoto;
     static int PERMISSIONCODE = 1;
-    static int REQUESTCODE = 1;
+    //static int REQUESTCODE = 1;
+    private static final int PICK_IMAGE = 100;
 
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -157,7 +159,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void goToHome() {
         Intent intent = new Intent(getApplicationContext(), NavigationHomeActivity.class);
         startActivity(intent);
-        //finish();
+        finish();
     }
 
     //A simple method to show a toast
@@ -182,15 +184,18 @@ public class RegisterActivity extends AppCompatActivity {
     }
     private void openGallery() {
         //TODO: open gallery intent and wait for user pick an image
-        Intent intentGallery = new Intent(Intent.ACTION_GET_CONTENT);
+       /* Intent intentGallery = new Intent(Intent.ACTION_GET_CONTENT);
         intentGallery.setType("+image/*");
-        startActivityForResult(intentGallery, REQUESTCODE);
+        startActivityForResult(intentGallery, REQUESTCODE);*/
+
+       Intent intentGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+       startActivityForResult(intentGallery,PICK_IMAGE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK && requestCode == REQUESTCODE && data != null){
+        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE && data != null){
             //  El usuario a seleccionado una imagen correctamente
             //  Lo que ahora necesitamos el guardar la referencia en un Uri variable
             pickedImageUri = data.getData();
