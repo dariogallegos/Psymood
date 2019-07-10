@@ -31,4 +31,5 @@
         </activity>
         <activity android:name=".Activities.RegisterActivity"></activity>
     </application>
+
 </manifest>
