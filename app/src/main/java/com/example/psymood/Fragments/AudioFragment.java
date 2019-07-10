@@ -1,14 +1,26 @@
 package com.example.psymood.Fragments;
 
 
-import android.app.Dialog;
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.Fragment;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 
@@ -36,10 +48,15 @@ import java.io.IOException;
  */
 public class AudioFragment extends Fragment {
 
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
 
     private OnFragmentInteractionListener mListener;
 
-    private Button recordButton,playButton,dialogButton;
+    private Button recordButton, playButton, dialogButton;
+
+    //Boolean controll
+    private boolean mStartRecording = true;
+
     //record and play audio
     private MediaRecorder mRecorder;
     private MediaPlayer player;
@@ -48,6 +65,7 @@ public class AudioFragment extends Fragment {
 
     //Firebase storage audio
     private StorageReference mStorage;
+
 
     //Progress dialog
     private ProgressBar progressBar;
@@ -62,9 +80,9 @@ public class AudioFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_audio, container, false);
-        recordButton =  view.findViewById(R.id.recordButton);
-        playButton =  view.findViewById(R.id.playButton);
-        dialogButton =  view.findViewById(R.id.dialogButton);
+        recordButton = view.findViewById(R.id.recordButton);
+        playButton = view.findViewById(R.id.playButton);
+        dialogButton = view.findViewById(R.id.dialogButton);
 
         //Firabase storage ini
         mStorage = FirebaseStorage.getInstance().getReference();
@@ -73,28 +91,44 @@ public class AudioFragment extends Fragment {
         mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
         mFileName += "/recorded_audio.3gp";
 
+
         recordButton.setOnClickListener(new View.OnClickListener() {
-            boolean mStartRecording = true;
+
+
             @Override
             public void onClick(View v) {
-                onRecord(mStartRecording);
-                if (mStartRecording) {
-                    Log.e("Audio fragment","Stop recording");
-                } else {
-                    Log.e("Audio fragment","Start recording");
+
+                //comprobacion de que los permisos estan declarados en el manifest
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED &&
+                        ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                        ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+
+                        onRecord(mStartRecording);
+                        mStartRecording = !mStartRecording;
+
+                    } else {
+                        checkRequestPermission();
+                    }
                 }
-                mStartRecording = !mStartRecording;
+                else {
+                    onRecord(mStartRecording);
+                    mStartRecording = !mStartRecording;
+                }
+
             }
         });
         playButton.setOnClickListener(new View.OnClickListener() {
             boolean mStartPlaying = true;
+
             @Override
             public void onClick(View v) {
+
                 onPlay(mStartPlaying);
                 if (mStartPlaying) {
-                    Log.e("Button playing","Stop playing");
+                    Log.e("Button playing", "Stop playing");
                 } else {
-                    Log.e("Button playing","Start playing");
+                    Log.e("Button playing", "Start playing");
                 }
                 mStartPlaying = !mStartPlaying;
             }
@@ -102,14 +136,125 @@ public class AudioFragment extends Fragment {
         dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog dialog = new Dialog(getContext());
-                dialog.show();
+                BottomSheetDialog dialog = new BottomSheetDialog(getContext());
                 dialog.setContentView(R.layout.dialog_preferences);
+
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+
             }
         });
 
         return view;
     }
+
+    private  void  checkRequestPermission(){
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, 1);
+    }
+
+
+   /* private void checkRequestPermission() {
+
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.RECORD_AUDIO)) {
+
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Location Permission Needed")
+                        .setMessage("This app needs the Location permission, please accept to use location functionality")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                //ActivityCompat.requestPermissions(this,
+                                //new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                //MY_PERMISSIONS_REQUEST_LOCATION );
+                            }
+                        })
+                        .create()
+                        .show();
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.RECORD_AUDIO},REQUEST_RECORD_AUDIO_PERMISSION );
+            }
+        }
+
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.RECORD_AUDIO)) {
+
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Write in storage permission Needed")
+                        .setMessage("This app needs to write in storage , please accept to store on the device functionality")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .create()
+                        .show();
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.RECORD_AUDIO},REQUEST_RECORD_AUDIO_PERMISSION );
+            }
+        }
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.RECORD_AUDIO)) {
+
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Location Permission Needed")
+                        .setMessage("This app needs the Location permission, please accept to use location functionality")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                //ActivityCompat.requestPermissions(this,
+                                //new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                //MY_PERMISSIONS_REQUEST_LOCATION );
+                            }
+                        })
+                        .create()
+                        .show();
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.RECORD_AUDIO},REQUEST_RECORD_AUDIO_PERMISSION );
+            }
+        }
+
+    }*/
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_RECORD_AUDIO_PERMISSION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    onRecord(mStartRecording);
+                    mStartRecording = !mStartRecording;
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(getContext(), "permission denied", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -137,6 +282,7 @@ public class AudioFragment extends Fragment {
 
     //Record audio
     private void startRecording() {
+
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -146,7 +292,7 @@ public class AudioFragment extends Fragment {
         try {
             mRecorder.prepare();
         } catch (IOException e) {
-            Log.e(LOG_TAG, "prepare() failed");
+            Log.e(LOG_TAG, "Error al preparar el recorder");
         }
 
         mRecorder.start();
@@ -167,7 +313,7 @@ public class AudioFragment extends Fragment {
         filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(getContext(),"Upload finished",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Upload finished", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -182,13 +328,14 @@ public class AudioFragment extends Fragment {
 
     //Play audio
     private void startPlaying() {
+
         player = new MediaPlayer();
         try {
             player.setDataSource(mFileName);
             player.prepare();
             player.start();
         } catch (IOException e) {
-            Log.e(LOG_TAG, "prepare() failed");
+            Log.e(LOG_TAG, "Error al ejecutar el media player prepare() failed");
         }
     }
 
@@ -204,7 +351,6 @@ public class AudioFragment extends Fragment {
             stopPlaying();
         }
     }
-
 
 
     public interface OnFragmentInteractionListener {
