@@ -6,8 +6,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -17,6 +20,8 @@ import android.os.Environment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -27,6 +32,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -51,11 +57,14 @@ public class AudioFragment extends Fragment {
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
 
     private OnFragmentInteractionListener mListener;
+    private ImageButton recordButton,playButton;
+    private Button confirmButton;
 
-    private Button recordButton, playButton, dialogButton;
 
     //Boolean controll
     private boolean mStartRecording = true;
+    private boolean mStartPlaying = true;
+    private boolean audioLoaded = false;
 
     //record and play audio
     private MediaRecorder mRecorder;
@@ -76,13 +85,10 @@ public class AudioFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_audio, container, false);
         recordButton = view.findViewById(R.id.recordButton);
-        playButton = view.findViewById(R.id.playButton);
-        dialogButton = view.findViewById(R.id.dialogButton);
 
         //Firabase storage ini
         mStorage = FirebaseStorage.getInstance().getReference();
@@ -93,8 +99,6 @@ public class AudioFragment extends Fragment {
 
 
         recordButton.setOnClickListener(new View.OnClickListener() {
-
-
             @Override
             public void onClick(View v) {
 
@@ -105,6 +109,7 @@ public class AudioFragment extends Fragment {
                         ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
 
                         onRecord(mStartRecording);
+                        setMicrophoneBackground(mStartRecording);
                         mStartRecording = !mStartRecording;
 
                     } else {
@@ -115,119 +120,44 @@ public class AudioFragment extends Fragment {
                     onRecord(mStartRecording);
                     mStartRecording = !mStartRecording;
                 }
-
             }
         });
-        playButton.setOnClickListener(new View.OnClickListener() {
-            boolean mStartPlaying = true;
 
-            @Override
-            public void onClick(View v) {
-
-                onPlay(mStartPlaying);
-                if (mStartPlaying) {
-                    Log.e("Button playing", "Stop playing");
-                } else {
-                    Log.e("Button playing", "Start playing");
-                }
-                mStartPlaying = !mStartPlaying;
-            }
-        });
-        dialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BottomSheetDialog dialog = new BottomSheetDialog(getContext());
-                dialog.setContentView(R.layout.dialog_preferences);
-
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-
-            }
-        });
 
         return view;
     }
 
-    private  void  checkRequestPermission(){
-        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, 1);
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+       /* if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }*/
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
 
-   /* private void checkRequestPermission() {
 
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.RECORD_AUDIO)) {
-
-                new AlertDialog.Builder(getContext())
-                        .setTitle("Location Permission Needed")
-                        .setMessage("This app needs the Location permission, please accept to use location functionality")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //Prompt the user once explanation has been shown
-                                //ActivityCompat.requestPermissions(this,
-                                //new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                //MY_PERMISSIONS_REQUEST_LOCATION );
-                            }
-                        })
-                        .create()
-                        .show();
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.RECORD_AUDIO},REQUEST_RECORD_AUDIO_PERMISSION );
-            }
-        }
-
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.RECORD_AUDIO)) {
-
-                new AlertDialog.Builder(getContext())
-                        .setTitle("Write in storage permission Needed")
-                        .setMessage("This app needs to write in storage , please accept to store on the device functionality")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                            }
-                        })
-                        .create()
-                        .show();
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.RECORD_AUDIO},REQUEST_RECORD_AUDIO_PERMISSION );
-            }
-        }
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.RECORD_AUDIO)) {
-
-                new AlertDialog.Builder(getContext())
-                        .setTitle("Location Permission Needed")
-                        .setMessage("This app needs the Location permission, please accept to use location functionality")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //Prompt the user once explanation has been shown
-                                //ActivityCompat.requestPermissions(this,
-                                //new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                //MY_PERMISSIONS_REQUEST_LOCATION );
-                            }
-                        })
-                        .create()
-                        .show();
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.RECORD_AUDIO},REQUEST_RECORD_AUDIO_PERMISSION );
-            }
-        }
-
-    }*/
-
+    //check permission to record audio in the user mobile
+    private  void  checkRequestPermission(){
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, 1);
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -255,30 +185,67 @@ public class AudioFragment extends Fragment {
     }
 
 
+    //Dialog of confirm
+    private void showDialogConfirm() {
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+        final BottomSheetDialog dialog = new BottomSheetDialog(getContext());
+
+        dialog.setContentView(R.layout.dialog_preferences);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        playButton =  dialog.findViewById(R.id.playButton);
+        confirmButton = dialog.findViewById(R.id.confirmButton);
+
+
+        //Boton de play
+        playButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                onPlay(mStartPlaying);
+                mStartPlaying = !mStartPlaying;
+                finishedPlaying();
+            }
+        });
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadAudio();
+                audioLoaded = true;
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                controlStateAudioWhenDismissDialog();
+            }
+        });
+
+
+    }
+
+    //Controla el estado de framgent audio cuando se cierra el dialogo. Deja todos lo flags correctamente asignados para la proxima grabacion.
+    private void controlStateAudioWhenDismissDialog() {
+        if(!audioLoaded){
+            onPlay(mStartPlaying);
+        }
+        //lo dejamos como nuevo para la siguiente vez que inice no haya problema
+        mStartPlaying = true;
+    }
+
+
+    //Change background of microphone. it depends of her state
+    private void setMicrophoneBackground(boolean mStartRecording) {
+        if(mStartRecording){
+            recordButton.setBackgroundResource(R.drawable.ic_mic_pressed);
+        }else {
+            recordButton.setBackgroundResource(R.drawable.ic_mic);
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-       /* if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }*/
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
 
     //Record audio
     private void startRecording() {
@@ -304,7 +271,7 @@ public class AudioFragment extends Fragment {
         mRecorder = null;
 
         //TODO ANTES DE ENVIAR EL AUDIO A FIRENASE DEBE APARECER UN DIALOG DE CONFIRMACION
-        uploadAudio();
+        showDialogConfirm();
     }
 
     private void uploadAudio() {
@@ -325,6 +292,7 @@ public class AudioFragment extends Fragment {
             stopRecording();
         }
     }
+
 
     //Play audio
     private void startPlaying() {
@@ -352,7 +320,19 @@ public class AudioFragment extends Fragment {
         }
     }
 
+    private void finishedPlaying(){
 
+        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mStartPlaying = true;
+            }
+        });
+
+    }
+
+
+    //Implements function fragment
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
