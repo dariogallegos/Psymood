@@ -2,15 +2,11 @@ package com.example.psymood.Fragments;
 
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -19,9 +15,6 @@ import android.os.Bundle;
 import android.os.Environment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -33,7 +26,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
@@ -75,9 +67,6 @@ public class AudioFragment extends Fragment {
     //Firebase storage audio
     private StorageReference mStorage;
 
-
-    //Progress dialog
-    private ProgressBar progressBar;
 
     public AudioFragment() {
         // Required empty public constructor
