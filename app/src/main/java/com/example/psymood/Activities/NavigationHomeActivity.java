@@ -2,6 +2,8 @@ package com.example.psymood.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.fragment.app.Fragment;
 import android.view.View;
@@ -26,9 +28,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class NavigationHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class NavigationHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener{
 
     private DrawerLayout drawer;
+    private AppBarLayout appBarLayout;
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
 
@@ -41,6 +44,8 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
+        //Barra superior que engloba al toobar
+        appBarLayout = findViewById(R.id.appBarLayout);
 
         //Barra con las opciones para abrir el menu y mas cosas
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -185,4 +190,10 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         return true;
     }
 
+    @Override
+    public void onFragmentInteraction(int elevation) {
+        if(appBarLayout!= null){
+            appBarLayout.setElevation(elevation);
+        }
+    }
 }
