@@ -64,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    //comprobacion del emial and password
     private void signIn(String mail, String password) {
         mAuth.signInWithEmailAndPassword(mail,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override

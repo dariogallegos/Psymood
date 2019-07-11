@@ -83,6 +83,7 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         }
     }
 
+    //Actulizo la informacion del usuario en NavHeader
     private void updateNavHeader() {
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);

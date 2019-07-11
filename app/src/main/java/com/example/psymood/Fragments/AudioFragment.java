@@ -207,7 +207,7 @@ public class AudioFragment extends Fragment {
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                controlStateAudioWhenDismissDialog();
+                controlAudioWhenDismissDialog();
             }
         });
 
@@ -215,8 +215,7 @@ public class AudioFragment extends Fragment {
     }
 
     //Controla el estado de framgent audio cuando se cierra el dialogo. Deja todos lo flags correctamente asignados para la proxima grabacion.
-    private void controlStateAudioWhenDismissDialog() {
-
+    private void controlAudioWhenDismissDialog() {
         if(player != null && player.isPlaying()){
             stopPlaying();
         }
