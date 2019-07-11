@@ -118,20 +118,21 @@ public class AudioFragment extends Fragment {
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
+       /* if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+        */
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-       /* if (context instanceof OnFragmentInteractionListener) {
+        if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
-        }*/
+        }
     }
 
     @Override
@@ -262,14 +263,27 @@ public class AudioFragment extends Fragment {
     }
 
     private void uploadAudio() {
-        StorageReference filepath = mStorage.child("Audio").child("new_audio.3gp");
+
+
+        final StorageReference filepath = mStorage.child("Audio").child("new_audio.3gp");
         Uri uri = Uri.fromFile(new File(mFileName));
         filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(getContext(), "Upload finished", Toast.LENGTH_SHORT).show();
+
+                filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Toast.makeText(getContext(),"Upload successfull",Toast.LENGTH_SHORT).show();
+                        mListener.onFragmentInteraction(uri.toString());
+
+                    }
+                });
+
             }
         });
+
+
     }
 
     private void onRecord(boolean start) {
@@ -322,6 +336,6 @@ public class AudioFragment extends Fragment {
     //Implements function fragment
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(String urlAudio);
     }
 }

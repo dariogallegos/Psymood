@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "988918104835-cbrafgsugqkagadqtvtqbchiqn7nkbtl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.psymood",
+            "certificate_hash": "e7f3c687bace5c03f6df333b6d3d98cbc8bf9816"
+          }
+        },
+        {
           "client_id": "988918104835-oi4dvm69rogup23c7ts1bl19cocgcap6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

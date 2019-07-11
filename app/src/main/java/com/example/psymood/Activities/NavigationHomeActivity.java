@@ -3,6 +3,7 @@ package com.example.psymood.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.psymood.Models.InfoUser;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.fragment.app.Fragment;
@@ -26,14 +27,19 @@ import com.example.psymood.Fragments.SettingsFragment;
 import com.example.psymood.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
-public class NavigationHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener{
+public class NavigationHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener,AudioFragment.OnFragmentInteractionListener{
 
     private DrawerLayout drawer;
     private AppBarLayout appBarLayout;
+
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
+
+    FirebaseDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +49,10 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         //Firebase instace and obtain current user
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+
+        //Firebase database instance and obtain reference of database.
+        database = FirebaseDatabase.getInstance();
+
 
         //Barra superior que engloba al toobar
         appBarLayout = findViewById(R.id.appBarLayout);
@@ -74,6 +84,21 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         // initViewNavigation marca en el menu la primera opcion , de forma que cuando lo abres ya esta un item seleccionado.
         initViewNavigation(savedInstanceState,navigationView);
         updateNavHeader();
+
+        //Create method to upload info user in real time data base.
+        uploadInfoUserDataBase();
+
+    }
+
+    private void uploadInfoUserDataBase() {
+
+        DatabaseReference myRef = database.getReference("InfoUser");
+
+        //TODO comprobacion si el usuario ya tiene informacion o si se acaba de registrar y los campos estan vacios.
+
+        InfoUser infoUser = new InfoUser(currentUser.getDisplayName(),currentUser.getEmail(),currentUser.getPhotoUrl().toString());
+        myRef.child(currentUser.getUid()).setValue(infoUser);
+
     }
 
     private void initViewNavigation(Bundle savedInstanceState, NavigationView navigationView) {
@@ -196,5 +221,14 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         if(appBarLayout!= null){
             appBarLayout.setElevation(elevation);
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(String urlAudio) {
+        DatabaseReference myRef = database.getReference("InfoUser");
+        DatabaseReference myUserRef =  myRef.child(currentUser.getUid());
+        DatabaseReference myAudioRef = myUserRef.child("psyAudio");
+        myAudioRef.setValue(urlAudio);
+
     }
 }
