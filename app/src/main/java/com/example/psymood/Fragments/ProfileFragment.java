@@ -96,7 +96,7 @@ public class ProfileFragment extends Fragment {
                 super.onScrolled(recyclerView, dx, dy);
 
                 if(recyclerViewGroups.getChildAt(0).getTop() < initialTopPosition ) {
-                    mListener.onFragmentInteraction(10);
+                    mListener.onFragmentInteraction(16);
                 }
                 else{
                     mListener.onFragmentInteraction(0);

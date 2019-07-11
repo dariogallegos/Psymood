@@ -56,7 +56,6 @@ public class AudioFragment extends Fragment {
     //Boolean controll
     private boolean mStartRecording = true;
     private boolean mStartPlaying = true;
-    private boolean audioLoaded = false;
 
     //record and play audio
     private MediaRecorder mRecorder;
@@ -199,7 +198,6 @@ public class AudioFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 uploadAudio();
-                audioLoaded = true;
                 dialog.dismiss();
             }
         });
@@ -218,8 +216,9 @@ public class AudioFragment extends Fragment {
 
     //Controla el estado de framgent audio cuando se cierra el dialogo. Deja todos lo flags correctamente asignados para la proxima grabacion.
     private void controlStateAudioWhenDismissDialog() {
-        if(!audioLoaded){
-            onPlay(mStartPlaying);
+
+        if(player != null && player.isPlaying()){
+            stopPlaying();
         }
         //lo dejamos como nuevo para la siguiente vez que inice no haya problema
         mStartPlaying = true;
