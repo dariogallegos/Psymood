@@ -14,63 +14,63 @@
         android:layout_width="247dp"
         android:layout_height="27dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/muli_regular"
-        android:text="¿Añadir una nota?"
+        android:textStyle="bold"
+        android:textColor="@color/PsymoodColor"
+        android:text="Confirmacion de envío"
+        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/titleText"
-        android:layout_width="245dp"
-        android:layout_height="53dp"
+    <ImageButton
+        android:id="@+id/playButton"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:fontFamily="@font/muli_regular"
-        android:hint="Titulo de la pelicula"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ic_play"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-    <EditText
-        android:id="@+id/subtitleText"
-        android:layout_width="245dp"
-        android:layout_height="53dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:fontFamily="@font/muli_regular"
-        android:hint="Subtitulo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleText" />
-
-    <Button
-        android:id="@+id/confirmButton"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="0dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/White"
-        android:fontFamily="@font/muli_regular"
-        android:text="Guardar"
-        android:textColor="#4CAF50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.807"
+        app:layout_constraintHorizontal_bias="0.578"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subtitleText"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/playButton"
+        app:layout_constraintVertical_bias="0.042">
+
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="292dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/confirmButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="OK"
+            android:textColor="#4CAF50"
+            android:background="@color/GreyBackground"/>
+    </LinearLayout>
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
