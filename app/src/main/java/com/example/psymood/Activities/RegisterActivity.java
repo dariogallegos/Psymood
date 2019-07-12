@@ -1,10 +1,14 @@
 package com.example.psymood.Activities;
 
 import android.Manifest;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+
+import androidx.annotation.AnyRes;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +28,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -31,8 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private ImageView regUserPhoto;
     static int PERMISSIONCODE = 1;
-    //static int REQUESTCODE = 1;
-    private static final int PICK_IMAGE = 100;
+    static final int PICK_IMAGE = 100;
 
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -122,10 +126,15 @@ public class RegisterActivity extends AppCompatActivity {
         StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("users_photos");
 
 
-        //TODO falta aun corregir esto, cuando no se carga una imagen , que ponga una por defecto.
+        if(pickedImageUri == null){
+            pickedImageUri = getUriToDrawable(getApplicationContext(),R.drawable.support);
+        }
 
         //Guardamos la referencia en imafeFilePath
+        //TODO aqui es donde asignamos el nombre que va a tener la photo al subir a firebase. Lo suyo seria cambiar los primeros digitos de
+        //TODO de la foto para que se suban con el ide de usuario o algo para poder odernarlas.
         final StorageReference imageFilePath = mStorage.child(pickedImageUri.getLastPathSegment());
+        
         imageFilePath.putFile(pickedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -201,5 +210,14 @@ public class RegisterActivity extends AppCompatActivity {
             pickedImageUri = data.getData();
             regUserPhoto.setImageURI(pickedImageUri);
         }
+    }
+
+    public static final Uri getUriToDrawable(@NotNull Context context,@AnyRes int drawableId) {
+
+        Uri imageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
+                "://" + context.getResources().getResourcePackageName(drawableId)
+                + '/' + context.getResources().getResourceTypeName(drawableId)
+                + '/' + context.getResources().getResourceEntryName(drawableId) );
+        return imageUri;
     }
 }
