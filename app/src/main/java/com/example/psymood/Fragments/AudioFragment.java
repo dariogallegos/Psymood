@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 
+import com.example.psymood.Activities.FirebaseInteractor;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -31,12 +32,16 @@ import android.widget.Toast;
 
 import com.example.psymood.R;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,6 +70,7 @@ public class AudioFragment extends Fragment {
 
     //Firebase storage audio
     private StorageReference mStorage;
+    private FirebaseUser currentUser;
 
 
     public AudioFragment() {
@@ -80,6 +86,8 @@ public class AudioFragment extends Fragment {
 
         //Firabase storage ini
         mStorage = FirebaseStorage.getInstance().getReference();
+        //Firebase user authentication
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //Nombre del archivo
         mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
@@ -127,12 +135,12 @@ public class AudioFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
+        /*if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
-        }
+        }*/
     }
 
     @Override
@@ -264,8 +272,12 @@ public class AudioFragment extends Fragment {
 
     private void uploadAudio() {
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
+        String currentDateandTime = sdf.format(new Date());
 
-        final StorageReference filepath = mStorage.child("Audio").child("new_audio.3gp");
+
+        //TODO AUDIO: ID_AUDIO CON EL ID DE USER
+        final StorageReference filepath = mStorage.child("users_audios").child(currentUser.getUid()).child(currentDateandTime);
         Uri uri = Uri.fromFile(new File(mFileName));
         filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -274,8 +286,9 @@ public class AudioFragment extends Fragment {
                 filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
+                        FirebaseInteractor.saveAudioInDatabase(uri.toString());
                         Toast.makeText(getContext(),"Upload successfull",Toast.LENGTH_SHORT).show();
-                        mListener.onFragmentInteraction(uri.toString());
+                        //mListener.onFragmentInteraction(uri.toString());
 
                     }
                 });

@@ -31,7 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-public class NavigationHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener,AudioFragment.OnFragmentInteractionListener{
+public class NavigationHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener{
 
     private DrawerLayout drawer;
     private AppBarLayout appBarLayout;
@@ -51,7 +51,10 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         currentUser = mAuth.getCurrentUser();
 
         //Firebase database instance and obtain reference of database.
-        database = FirebaseDatabase.getInstance();
+        //database = FirebaseDatabase.getInstance();
+        FirebaseInteractor.initUI(currentUser);
+
+
 
 
         //Barra superior que engloba al toobar
@@ -86,18 +89,19 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         updateNavHeader();
 
         //Create method to upload info user in real time data base.
-        uploadInfoUserDataBase();
+        //uploadInfoUserDataBase();
+        FirebaseInteractor.createInfoUserInDatabase();
 
     }
 
     private void uploadInfoUserDataBase() {
 
-        DatabaseReference myRef = database.getReference("InfoUser");
+        /*DatabaseReference myRef = database.getReference("InfoUser");
 
         //TODO comprobacion si el usuario ya tiene informacion o si se acaba de registrar y los campos estan vacios.
 
         InfoUser infoUser = new InfoUser(currentUser.getDisplayName(),currentUser.getEmail(),currentUser.getPhotoUrl().toString());
-        myRef.child(currentUser.getUid()).setValue(infoUser);
+        myRef.child(currentUser.getUid()).setValue(infoUser);*/
 
     }
 
@@ -223,12 +227,12 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         }
     }
 
-    @Override
+    /*@Override
     public void onFragmentInteraction(String urlAudio) {
         DatabaseReference myRef = database.getReference("InfoUser");
         DatabaseReference myUserRef =  myRef.child(currentUser.getUid());
         DatabaseReference myAudioRef = myUserRef.child("psyAudio");
         myAudioRef.setValue(urlAudio);
 
-    }
+    }*/
 }
