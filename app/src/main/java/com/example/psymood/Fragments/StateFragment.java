@@ -23,12 +23,12 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ProfileFragment.OnFragmentInteractionListener} interface
+ * {@link StateFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ProfileFragment#newInstance} factory method to
+ * Use the {@link StateFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment {
+public class StateFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -41,14 +41,14 @@ public class ProfileFragment extends Fragment {
     private RecyclerView recyclerViewGroups;
     private List<ItemGroup> itemGroupList;
 
-    public ProfileFragment() {
+    public StateFragment() {
         // Required empty public constructor
     }
 
 
     // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
+    public static StateFragment newInstance(String param1, String param2) {
+        StateFragment fragment = new StateFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -72,11 +72,12 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_state, container, false);
         itemGroupList = new ArrayList<>();
 
-        recyclerViewGroups = view.findViewById(R.id.my_recycler_view);
 
+
+        recyclerViewGroups = view.findViewById(R.id.my_recycler_view);
 
         recyclerViewGroups.setHasFixedSize(true);
         recyclerViewGroups.setLayoutManager(new LinearLayoutManager(getContext()));

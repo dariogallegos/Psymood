@@ -4,11 +4,22 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.example.psymood.Activities.MyTaskAdapter;
+import com.example.psymood.Models.ItemData;
+import com.example.psymood.Models.ItemTask;
 import com.example.psymood.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +41,15 @@ public class HomeFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    //Elements to Homefragment
+    ProgressBar progressBarDay;
+    TextView porcentProgressDay;
+
+    RecyclerView recyclerViewTask;
+    MyTaskAdapter taskAdapter;
+    List<ItemTask> listItemTask;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -63,10 +83,34 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        llenarLista();
+
+
+
+
+        progressBarDay = view.findViewById(R.id.progressBarDay);
+        //progressBarDay.setScaleY(1f);
+        progressBarDay.setProgress(35);
+
+
+
+        //recyclerView task
+        recyclerViewTask = view.findViewById(R.id.recyclerViewTask);
+        taskAdapter = new MyTaskAdapter(getContext(),listItemTask);
+
+
+        //RecyclerView and Adpater
+        recyclerViewTask.setHasFixedSize(true);
+        recyclerViewTask.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false));
+        //recyclerViewTask.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewTask.setAdapter(taskAdapter);
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -106,5 +150,16 @@ public class HomeFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+
+    private void llenarLista() {
+        listItemTask = new ArrayList<>();
+        listItemTask.add(new ItemTask("Prueba a hacerte un selfie","2",R.color.PurpleTask,R.drawable.ic_task_camera));
+        listItemTask.add(new ItemTask("¿Grabamos un vídeo?","3",R.color.PinkTask,R.drawable.ic_task_video));
+        listItemTask.add(new ItemTask("Hey, ¿como te encuentras?","6",R.color.GreenTask,R.drawable.ic_task_face));
+        listItemTask.add(new ItemTask("Y si me dices algo?","10",R.color.YellowTask,R.drawable.ic_task_mic));
+        listItemTask.add(new ItemTask("dario","8",R.color.VioletTask,R.drawable.ic_task_mood));
+
     }
 }
