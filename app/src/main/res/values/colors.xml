@@ -7,7 +7,16 @@
     <color name="GreyBackground">#f9f9fa</color>
     <color name="GreyLight">#fafafa</color>
     <color name="GreyTitle">#3f4144</color>
+    <color name="GreySubTitle">#5E6364</color>
     <color name="Black">#000000</color>
-    <color name="PsymoodColor">#EEFB5B44</color>
+    <color name="PsymoodColor">#fa7f6c</color>
     <color name="GreyMedium">#9F9FA5</color>
+    <color name="GreenTask">#46b685</color>
+    <color name="YellowTask">#fbc37c</color>
+    <color name="PurpleTask">#95a1f1</color>
+    <color name="PinkTask">#f79292</color>
+    <color name="VioletTask">#7D89F3</color>
+    <color name="GreyTransparent">#79F9F9FA</color>
+
+
 </resources>
