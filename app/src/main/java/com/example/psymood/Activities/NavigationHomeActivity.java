@@ -3,7 +3,7 @@ package com.example.psymood.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.psymood.Models.InfoUser;
+import com.example.psymood.Fragments.CameraFragment;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.fragment.app.Fragment;
@@ -22,16 +22,14 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.psymood.Fragments.AudioFragment;
 import com.example.psymood.Fragments.HomeFragment;
-import com.example.psymood.Fragments.ProfileFragment;
-import com.example.psymood.Fragments.SettingsFragment;
+import com.example.psymood.Fragments.StateFragment;
 import com.example.psymood.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-public class NavigationHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener{
+public class NavigationHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, StateFragment.OnFragmentInteractionListener{
 
     private DrawerLayout drawer;
     private AppBarLayout appBarLayout;
@@ -176,10 +174,10 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_container,new HomeFragment()).commit();
                 break;
             case R.id.nav_profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_container,new ProfileFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_container,new StateFragment()).commit();
                 break;
             case R.id.nav_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_container,new SettingsFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_container,new CameraFragment()).commit();
                 break;
             case R.id.nav_singOut:
                 FirebaseAuth.getInstance().signOut();
@@ -206,10 +204,10 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
                 selectFragment = new HomeFragment();
                 break;
             case R.id.nav_add:
-                selectFragment = new ProfileFragment();
+                selectFragment = new StateFragment();
                 break;
             case R.id.nav_camera:
-                selectFragment = new SettingsFragment();
+                selectFragment = new CameraFragment();
                 break;
             case R.id.nav_audio:
                 selectFragment = new AudioFragment();
