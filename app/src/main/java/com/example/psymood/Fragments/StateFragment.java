@@ -86,6 +86,7 @@ public class StateFragment extends Fragment {
         recyclerViewGroups.setAdapter(adapter);
 
         final int initialTopPosition = recyclerViewGroups.getTop();
+
         recyclerViewGroups.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
