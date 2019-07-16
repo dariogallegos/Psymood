@@ -80,7 +80,7 @@ public class StateFragment extends Fragment {
         itemGroupList = new ArrayList<>();
 
 
-        buttonCompleteState = view.findViewById(R.id.buttonCompleteState);
+        //buttonCompleteState = view.findViewById(R.id.buttonCompleteState);
         recyclerViewGroups = view.findViewById(R.id.my_recycler_view);
 
         recyclerViewGroups.setHasFixedSize(true);
@@ -110,12 +110,12 @@ public class StateFragment extends Fragment {
         });
 
 
-        buttonCompleteState.setOnClickListener(new View.OnClickListener() {
+        /*buttonCompleteState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.e("StateFragment","Button is clicked");
             }
-        });
+        });*/
 
         return view;
 
@@ -145,12 +145,11 @@ public class StateFragment extends Fragment {
 
     private void llenarLista() {
         List<ItemData> listItemData = new ArrayList<>();
-        listItemData.add(new ItemData("dario","dario"));
-        listItemData.add(new ItemData("dario","dario"));
-        listItemData.add(new ItemData("dario","dario"));
-        listItemData.add(new ItemData("dario","dario"));
-        listItemData.add(new ItemData("dario","dario"));
-
+        listItemData.add(new ItemData("Triste",R.drawable.ic_mood_unhappy));
+        listItemData.add(new ItemData("Insatisfecho",R.drawable.ic_mood_very_dissatisfied));
+        listItemData.add(new ItemData("Normal",R.drawable.ic_mood_neutro));
+        listItemData.add(new ItemData("Satisfecho",R.drawable.ic_mood_very_satisfied));
+        listItemData.add(new ItemData("Feliz",R.drawable.ic_mood_happy));
 
         itemGroupList.add(new ItemGroup("titulo1",listItemData));
         itemGroupList.add(new ItemGroup("titulo1",listItemData));
