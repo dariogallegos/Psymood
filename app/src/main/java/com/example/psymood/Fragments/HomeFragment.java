@@ -3,6 +3,9 @@ package com.example.psymood.Fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.psymood.Activities.MyTaskAdapter;
@@ -45,6 +49,7 @@ public class HomeFragment extends Fragment {
     //Elements to Homefragment
     ProgressBar progressBarDay;
     TextView porcentProgressDay;
+    NestedScrollView scrollViewHome;
 
     RecyclerView recyclerViewTask;
     MyTaskAdapter taskAdapter;
@@ -88,8 +93,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         llenarLista();
 
-
-
+        scrollViewHome = (NestedScrollView)view.findViewById(R.id.scrollViewHome);
 
         progressBarDay = view.findViewById(R.id.progressBarDay);
         //progressBarDay.setScaleY(1f);
@@ -108,6 +112,22 @@ public class HomeFragment extends Fragment {
         //recyclerViewTask.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewTask.setAdapter(taskAdapter);
 
+        final int initTopPositionScroll = scrollViewHome.getTop();
+        if(initTopPositionScroll == 0){
+            mListener.onFragmentInteraction(0);
+        }
+
+        scrollViewHome.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == 0) {
+                    mListener.onFragmentInteraction(0);
+                }
+                else{
+                    mListener.onFragmentInteraction(16);
+                }
+            }
+        });
 
         // Inflate the layout for this fragment
         return view;
@@ -115,20 +135,20 @@ public class HomeFragment extends Fragment {
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
+        /*if (mListener != null) {
             mListener.onFragmentInteraction(uri);
-        }
+        }*/
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        /*if (context instanceof OnFragmentInteractionListener) {
+        if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
-        }*/
+        }
     }
 
     @Override
@@ -149,7 +169,7 @@ public class HomeFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(int elevation);
     }
 
 

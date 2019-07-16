@@ -29,7 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-public class NavigationHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, StateFragment.OnFragmentInteractionListener{
+public class NavigationHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, StateFragment.OnFragmentInteractionListener,HomeFragment.OnFragmentInteractionListener{
 
     private DrawerLayout drawer;
     private AppBarLayout appBarLayout;
@@ -53,10 +53,9 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         FirebaseInteractor.initUI(currentUser);
 
 
-
-
         //Barra superior que engloba al toobar
         appBarLayout = findViewById(R.id.appBarLayout);
+        appBarLayout.setElevation(0);
 
         //Barra con las opciones para abrir el menu y mas cosas
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -225,12 +224,4 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         }
     }
 
-    /*@Override
-    public void onFragmentInteraction(String urlAudio) {
-        DatabaseReference myRef = database.getReference("InfoUser");
-        DatabaseReference myUserRef =  myRef.child(currentUser.getUid());
-        DatabaseReference myAudioRef = myUserRef.child("psyAudio");
-        myAudioRef.setValue(urlAudio);
-
-    }*/
 }

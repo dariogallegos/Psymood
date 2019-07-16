@@ -8,7 +8,8 @@
     tools:context=".Fragments.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollViewHome"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -66,6 +67,7 @@
                 android:paddingTop="7dp">
 
                 <TextView
+                    android:layout_marginBottom="10dp"
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -117,7 +119,7 @@
                 android:orientation="vertical"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:paddingTop="20dp">
+                android:paddingTop="25dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -175,10 +177,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:background="@color/GreyTitle"
-                android:layout_height="300dp"/>
+                android:layout_height="300dp">
+            </LinearLayout>
 
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </FrameLayout>
