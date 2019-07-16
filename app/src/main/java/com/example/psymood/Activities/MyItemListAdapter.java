@@ -32,7 +32,7 @@ public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.My
 
     @Override
     public void onBindViewHolder(MyViewHolder myViewHolder, int i) {
-        myViewHolder.text_view_item.setText(itemDataList.get(i).getName());
+        myViewHolder.text_view_item.setText(itemDataList.get(i).getTitle());
     }
 
     @Override

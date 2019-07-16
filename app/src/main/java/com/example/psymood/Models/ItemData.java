@@ -1,21 +1,22 @@
 package com.example.psymood.Models;
 
 public class ItemData {
-    private String name,image;
+    private String title,image;
+
 
     public ItemData(){}
 
     public ItemData(String name, String image) {
-        this.name = name;
+        this.title = name;
         this.image = image;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getImage() {

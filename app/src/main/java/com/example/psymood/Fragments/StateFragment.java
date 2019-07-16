@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import com.example.psymood.Activities.MyItemGroupAdapter;
 import com.example.psymood.Models.ItemData;
 import com.example.psymood.Models.ItemGroup;
 import com.example.psymood.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +43,7 @@ public class StateFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private RecyclerView recyclerViewGroups;
     private List<ItemGroup> itemGroupList;
+    private FloatingActionButton buttonCompleteState;
 
     public StateFragment() {
         // Required empty public constructor
@@ -76,7 +80,7 @@ public class StateFragment extends Fragment {
         itemGroupList = new ArrayList<>();
 
 
-
+        buttonCompleteState = view.findViewById(R.id.buttonCompleteState);
         recyclerViewGroups = view.findViewById(R.id.my_recycler_view);
 
         recyclerViewGroups.setHasFixedSize(true);
@@ -86,7 +90,6 @@ public class StateFragment extends Fragment {
         recyclerViewGroups.setAdapter(adapter);
 
         final int initialTopPosition = recyclerViewGroups.getTop();
-
         recyclerViewGroups.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -103,6 +106,14 @@ public class StateFragment extends Fragment {
                 else{
                     mListener.onFragmentInteraction(0);
                 }
+            }
+        });
+
+
+        buttonCompleteState.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("StateFragment","Button is clicked");
             }
         });
 

@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
         android:background="@drawable/reg_edittext_style"
-        android:hint="@string/name"
+        android:hint="@string/title"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
