@@ -1,12 +1,13 @@
 package com.example.psymood.Models;
 
 public class ItemData {
-    private String title,image;
+    private String title;
+    private int image;
 
 
     public ItemData(){}
 
-    public ItemData(String name, String image) {
+    public ItemData(String name, int image) {
         this.title = name;
         this.image = image;
     }
@@ -19,11 +20,11 @@ public class ItemData {
         this.title = title;
     }
 
-    public String getImage() {
+    public int getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(int image) {
         this.image = image;
     }
 }
