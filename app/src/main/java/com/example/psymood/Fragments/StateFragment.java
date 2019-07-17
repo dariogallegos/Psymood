@@ -87,7 +87,7 @@ public class StateFragment extends Fragment {
         recyclerViewGroups.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
-        uploadGroupList();
+        loadGroupList();
 
 
         MyItemGroupAdapter adapter=new MyItemGroupAdapter(getContext(),itemGroupList);
@@ -151,7 +151,7 @@ public class StateFragment extends Fragment {
     //TODO Comprobar si es la primera vez que entre, si es asi cargarla de cero. Si no es asi entonces cargar la lista
     //TODO del sharepreferences.
 
-    private void uploadGroupList() {
+    private void loadGroupList() {
 
         if(ApplicationPreferences.loadListGroup(KEYNAME) != null){
 
