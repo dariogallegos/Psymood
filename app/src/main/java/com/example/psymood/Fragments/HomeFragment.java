@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,12 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.psymood.Activities.MyTaskAdapter;
-import com.example.psymood.Models.ItemData;
 import com.example.psymood.Models.ItemTask;
+import com.example.psymood.Preferences.ApplicationPreferences;
 import com.example.psymood.R;
 
 import java.util.ArrayList;
@@ -34,6 +32,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
+    private static final String KEYSTATE = "NUMSTATE";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -48,7 +47,7 @@ public class HomeFragment extends Fragment {
 
     //Elements to Homefragment
     ProgressBar progressBarDay;
-    TextView porcentProgressDay;
+    TextView percentageTextView;
     NestedScrollView scrollViewHome;
 
     RecyclerView recyclerViewTask;
@@ -91,13 +90,20 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        llenarLista();
+        loadTaskList();
 
-        scrollViewHome = (NestedScrollView)view.findViewById(R.id.scrollViewHome);
+        scrollViewHome = view.findViewById(R.id.scrollViewHome);
 
+
+
+        int percentage = porcentageToday();
+        //TextView with porcentage of today
+        percentageTextView = view.findViewById(R.id.percentageTextView);
+        percentageTextView.setText(String.valueOf(percentage));
+
+        //Progress bar to show the progress day. Look in share preferences if there are changes.
         progressBarDay = view.findViewById(R.id.progressBarDay);
-        //progressBarDay.setScaleY(1f);
-        progressBarDay.setProgress(35);
+        progressBarDay.setProgress(percentage);
 
 
 
@@ -131,6 +137,11 @@ public class HomeFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private int porcentageToday() {
+        return ApplicationPreferences.loadNumState(KEYSTATE) *10;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -173,7 +184,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private void llenarLista() {
+    private void loadTaskList() {
         listItemTask = new ArrayList<>();
         listItemTask.add(new ItemTask("Prueba a hacerte un selfie","2",R.color.PurpleTask,R.drawable.ic_task_camera));
         listItemTask.add(new ItemTask("¿Grabamos un vídeo?","3",R.color.PinkTask,R.drawable.ic_task_video));
