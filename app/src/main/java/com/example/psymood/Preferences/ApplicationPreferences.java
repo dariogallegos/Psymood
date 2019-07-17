@@ -22,19 +22,15 @@ public class ApplicationPreferences {
         }
     }
 
-    /*public static void saveGroup(String KEYNAME, ItemGroup itemGroup){
+    public static void saveNumState(String KEYNAME,int numState){
         SharedPreferences.Editor prefersEditor = mSharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(itemGroup);
-        prefersEditor.putString(KEYNAME,json);
+        prefersEditor.putInt(KEYNAME,numState);
         prefersEditor.apply();
     }
 
-    public static ItemGroup loadGroup(String KEYNAME){
-        Gson gson = new Gson();
-        String json = mSharedPreferences.getString(KEYNAME, "");
-        return gson.fromJson(json,ItemGroup.class);
-    }*/
+    public static int loadNumState(String KEYNAME){
+        return mSharedPreferences.getInt(KEYNAME, 0);
+    }
 
 
     public static void saveListGroup(String KEYNAME, List<ItemGroup> itemGroupList){
