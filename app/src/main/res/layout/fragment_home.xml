@@ -84,8 +84,8 @@
                     android:layout_height="wrap_content">
 
                     <TextView
+                        android:id="@+id/percentageTextView"
                         android:layout_marginTop="5dp"
-                        android:text="30"
                         android:textSize="30sp"
                         android:fontFamily="@font/muli_bold"
                         android:textColor="@color/GreyTitle"
