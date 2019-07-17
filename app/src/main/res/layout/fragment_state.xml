@@ -14,7 +14,7 @@
 
         <!-- TODO: Update blank fragment layout NOTA: EL PADDING BOTTOM 70dp es para que el ultimo item del recyclerView Group se vea perfectamente-->
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginBottom="84dp"
+            android:layout_marginBottom="20dp"
             android:id="@+id/my_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
