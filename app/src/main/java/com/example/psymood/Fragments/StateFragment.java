@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,7 @@ import android.view.ViewGroup;
 import com.example.psymood.Activities.MyItemGroupAdapter;
 import com.example.psymood.Models.ItemData;
 import com.example.psymood.Models.ItemGroup;
+import com.example.psymood.Preferences.ApplicationPreferences;
 import com.example.psymood.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -36,6 +36,7 @@ public class StateFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    static final String KEYNAME ="MOOD";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -70,7 +71,6 @@ public class StateFragment extends Fragment {
     }
 
 
-    //TODO INICIALIZAR AQUI EL RECYCLER VIEW.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -85,7 +85,11 @@ public class StateFragment extends Fragment {
 
         recyclerViewGroups.setHasFixedSize(true);
         recyclerViewGroups.setLayoutManager(new LinearLayoutManager(getContext()));
-        llenarLista();
+
+
+        uploadGroupList();
+
+
         MyItemGroupAdapter adapter=new MyItemGroupAdapter(getContext(),itemGroupList);
         recyclerViewGroups.setAdapter(adapter);
 
@@ -143,41 +147,60 @@ public class StateFragment extends Fragment {
         mListener = null;
     }
 
-    private void llenarLista() {
+
+    //TODO Comprobar si es la primera vez que entre, si es asi cargarla de cero. Si no es asi entonces cargar la lista
+    //TODO del sharepreferences.
+
+    private void uploadGroupList() {
+
+        if(ApplicationPreferences.loadListGroup(KEYNAME) != null){
+
+            //Comprobar las fechas.Si la fecha es hoy cargamos sharePreferences, si no cargarmos la lista default.
+
+            itemGroupList = ApplicationPreferences.loadListGroup(KEYNAME);
+
+
+        }else {
+            defaultGroupList();
+        }
+    }
+
+    private void defaultGroupList() {
+
         List<ItemData> listItemData = new ArrayList<>();
-        listItemData.add(new ItemData("Triste",R.drawable.ic_mood_unhappy));
-        listItemData.add(new ItemData("Insatisfecho",R.drawable.ic_mood_very_dissatisfied));
-        listItemData.add(new ItemData("Normal",R.drawable.ic_mood_neutro));
-        listItemData.add(new ItemData("Satisfecho",R.drawable.ic_mood_very_satisfied));
-        listItemData.add(new ItemData("Feliz",R.drawable.ic_mood_happy));
+        listItemData.add(new ItemData("Triste", R.drawable.ic_mood_unhappy));
+        listItemData.add(new ItemData("Insatisfecho", R.drawable.ic_mood_very_dissatisfied));
+        listItemData.add(new ItemData("Normal", R.drawable.ic_mood_neutro));
+        listItemData.add(new ItemData("Satisfecho", R.drawable.ic_mood_very_satisfied));
+        listItemData.add(new ItemData("Feliz", R.drawable.ic_mood_happy));
 
 
         List<ItemData> listItemData2 = new ArrayList<>();
-        listItemData2.add(new ItemData("Triste2",R.drawable.ic_mood_unhappy));
-        listItemData2.add(new ItemData("Insatisfecho2",R.drawable.ic_mood_very_dissatisfied));
-        listItemData2.add(new ItemData("Normal2",R.drawable.ic_mood_neutro));
-        listItemData2.add(new ItemData("Satisfecho2",R.drawable.ic_mood_very_satisfied));
-        listItemData2.add(new ItemData("Feliz2",R.drawable.ic_mood_happy));
+        listItemData2.add(new ItemData("Triste2", R.drawable.ic_mood_unhappy));
+        listItemData2.add(new ItemData("Insatisfecho2", R.drawable.ic_mood_very_dissatisfied));
+        listItemData2.add(new ItemData("Normal2", R.drawable.ic_mood_neutro));
+        listItemData2.add(new ItemData("Satisfecho2", R.drawable.ic_mood_very_satisfied));
+        listItemData2.add(new ItemData("Feliz2", R.drawable.ic_mood_happy));
 
         List<ItemData> listItemData3 = new ArrayList<>();
-        listItemData3.add(new ItemData("Triste3",R.drawable.ic_mood_unhappy));
-        listItemData3.add(new ItemData("Insatisfecho3",R.drawable.ic_mood_very_dissatisfied));
-        listItemData3.add(new ItemData("Normal3",R.drawable.ic_mood_neutro));
-        listItemData3.add(new ItemData("Satisfecho3",R.drawable.ic_mood_very_satisfied));
-        listItemData3.add(new ItemData("Feliz3",R.drawable.ic_mood_happy));
+        listItemData3.add(new ItemData("Triste3", R.drawable.ic_mood_unhappy));
+        listItemData3.add(new ItemData("Insatisfecho3", R.drawable.ic_mood_very_dissatisfied));
+        listItemData3.add(new ItemData("Normal3", R.drawable.ic_mood_neutro));
+        listItemData3.add(new ItemData("Satisfecho3", R.drawable.ic_mood_very_satisfied));
+        listItemData3.add(new ItemData("Feliz3", R.drawable.ic_mood_happy));
 
         List<ItemData> listItemData4 = new ArrayList<>();
-        listItemData4.add(new ItemData("Triste4",R.drawable.ic_mood_unhappy));
-        listItemData4.add(new ItemData("Insatisfecho4",R.drawable.ic_mood_very_dissatisfied));
-        listItemData4.add(new ItemData("Normal4",R.drawable.ic_mood_neutro));
-        listItemData4.add(new ItemData("Satisfecho4",R.drawable.ic_mood_very_satisfied));
-        listItemData4.add(new ItemData("Feliz4",R.drawable.ic_mood_happy));
+        listItemData4.add(new ItemData("Triste4", R.drawable.ic_mood_unhappy));
+        listItemData4.add(new ItemData("Insatisfecho4", R.drawable.ic_mood_very_dissatisfied));
+        listItemData4.add(new ItemData("Normal4", R.drawable.ic_mood_neutro));
+        listItemData4.add(new ItemData("Satisfecho4", R.drawable.ic_mood_very_satisfied));
+        listItemData4.add(new ItemData("Feliz4", R.drawable.ic_mood_happy));
 
 
-        itemGroupList.add(new ItemGroup("emociones",listItemData));
-        itemGroupList.add(new ItemGroup("energía",listItemData2));
-        itemGroupList.add(new ItemGroup("concentración",listItemData3));
-        itemGroupList.add(new ItemGroup("actividad",listItemData4));
+        itemGroupList.add(new ItemGroup("emociones", listItemData));
+        itemGroupList.add(new ItemGroup("energía", listItemData2));
+        itemGroupList.add(new ItemGroup("concentración", listItemData3));
+        itemGroupList.add(new ItemGroup("actividad", listItemData4));
     }
 
     /**
