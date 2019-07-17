@@ -5,6 +5,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.psymood.Models.ItemGroup;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class ApplicationPreferences {
     private static SharedPreferences mSharedPreferences;
@@ -15,32 +22,36 @@ public class ApplicationPreferences {
         }
     }
 
-    public static void saveName(String KEYNAME, String name){
-        SharedPreferences.Editor prefersEditor = mSharedPreferences.edit();
-        prefersEditor.putString(KEYNAME,name);
-        prefersEditor.apply();
-    }
-
-    public static String loadName(String KEYNAME){
-        return mSharedPreferences.getString(KEYNAME,"");
-    }
-
-
-    /*public static void saveName(String KEYNAME, List<ExamenModel> examenModelList){
+    /*public static void saveGroup(String KEYNAME, ItemGroup itemGroup){
         SharedPreferences.Editor prefersEditor = mSharedPreferences.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(examenModelList);
+        String json = gson.toJson(itemGroup);
         prefersEditor.putString(KEYNAME,json);
         prefersEditor.apply();
-    }*/
+    }
 
-    /*public static List<ExamenModel> loadName(String KEYNAME){
-
-        List<ExamenModel> task;
+    public static ItemGroup loadGroup(String KEYNAME){
         Gson gson = new Gson();
         String json = mSharedPreferences.getString(KEYNAME, "");
-        task =  gson.fromJson(json, new TypeToken<ArrayList<ExamenModel>>(){}.getType());
-        return task;
+        return gson.fromJson(json,ItemGroup.class);
     }*/
+
+
+    public static void saveListGroup(String KEYNAME, List<ItemGroup> itemGroupList){
+        SharedPreferences.Editor prefersEditor = mSharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(itemGroupList);
+        prefersEditor.putString(KEYNAME,json);
+        prefersEditor.apply();
+    }
+
+    public static List<ItemGroup> loadListGroup(String KEYNAME){
+
+        List<ItemGroup> task;
+        Gson gson = new Gson();
+        String json = mSharedPreferences.getString(KEYNAME, "");
+        task =  gson.fromJson(json, new TypeToken<ArrayList<ItemGroup>>(){}.getType());
+        return task;
+    }
 
 }
