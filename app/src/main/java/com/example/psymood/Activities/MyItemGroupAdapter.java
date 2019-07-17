@@ -12,14 +12,15 @@ import android.widget.TextView;
 
 import com.example.psymood.Models.ItemData;
 import com.example.psymood.Models.ItemGroup;
+import com.example.psymood.Preferences.ApplicationPreferences;
 import com.example.psymood.R;
 
 
 import java.util.List;
 
 public class MyItemGroupAdapter extends RecyclerView.Adapter<MyItemGroupAdapter.MyViewHolder> {
-
-    private Context     context;
+    static final String KEYNAME = "MOOD";
+    private Context context;
     private List<ItemGroup> itemGroupList;
 
     public MyItemGroupAdapter(Context context, List<ItemGroup> itemGroupList) {
@@ -39,16 +40,17 @@ public class MyItemGroupAdapter extends RecyclerView.Adapter<MyItemGroupAdapter.
         String item_tittle = itemGroupList.get(i).getTitle();
         myViewHolder.item_title.setText(item_tittle);
 
-        List<ItemData> itemDataList = itemGroupList.get(i).getItemList();
+        final List<ItemData> itemDataList = itemGroupList.get(i).getItemList();
 
         final MyItemListAdapter itemListAdapter =  new MyItemListAdapter(context, itemDataList, new MyItemListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(ItemData itemData) {
 
+                Log.e("ADAPTADOR DE GRUPO","HA VUELTO AL ADAPTADOR DE GRUPO");
                 //communique al resto de celda ha sido clikada y que el resto se despinten.
                 //Comunicacion con firebase para registar el valor de la celda clickada.
 
-                Log.e("ADAPTADOR DE GRUPO","HA VUELTO AL ADAPTADOR DE GRUPO");
+                ApplicationPreferences.saveListGroup(KEYNAME,itemGroupList);
 
 
             }

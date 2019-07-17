@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.psymood.Fragments.CameraFragment;
+import com.example.psymood.Preferences.ApplicationPreferences;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.fragment.app.Fragment;
@@ -44,9 +45,13 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_home);
 
+        //Instanciamos el aplication preferences
+        ApplicationPreferences.init(getApplicationContext());
+
         //Firebase instace and obtain current user
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+
 
         //Firebase database instance and obtain reference of database.
         //database = FirebaseDatabase.getInstance();

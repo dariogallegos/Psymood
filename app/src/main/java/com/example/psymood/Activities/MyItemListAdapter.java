@@ -40,8 +40,8 @@ public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.My
     @Override
     public void onBindViewHolder(final MyViewHolder myViewHolder, final int i) {
 
-        myViewHolder.bind(itemDataList.get(i), mlistener);
 
+        myViewHolder.bind(itemDataList.get(i), mlistener);
 
         //Aqui tengo la imagen y el texto de la celda.
         myViewHolder.img_item.setBackgroundResource(itemDataList.get(i).getImage());
@@ -50,6 +50,7 @@ public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.My
         repaintCellData(myViewHolder,i);
 
 
+        //TODO si clicko y el anterior elemento era el mismo que yo entonces desclicko
         myViewHolder.cardViewState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,8 +63,11 @@ public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.My
                 myViewHolder.imageViewCheck.setBackgroundResource(R.drawable.ic_check_circle);
                 itemDataList.get(i).setClicked(true);
 
+                mlistener.onItemClick(itemDataList.get(i));
             }
         });
+
+
 
 
     }
@@ -78,17 +82,18 @@ public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.My
         }
     }
 
-
-
     private void repaintCellData(MyViewHolder myViewHolder,int positionCell) {
 
         if(itemDataList.get(positionCell).getClicked()==false) {
             myViewHolder.cardViewState.setCardBackgroundColor(ContextCompat.getColor(context, R.color.White));
-            myViewHolder.imageViewCheck.setBackgroundResource(R.drawable.ic_add_circle_outline);
+            myViewHolder.imageViewCheck.setBackgroundResource(R.color.White);
+        }
+        else{
+            myViewHolder.cardViewState.setCardElevation(9f);
+            myViewHolder.cardViewState.setCardBackgroundColor(ContextCompat.getColor(context,R.color.GreenCheck));
+            myViewHolder.imageViewCheck.setBackgroundResource(R.drawable.ic_check_circle);
         }
     }
-
-
 
 
     @Override
