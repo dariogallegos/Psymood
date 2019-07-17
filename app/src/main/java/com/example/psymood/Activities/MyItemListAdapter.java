@@ -15,11 +15,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.psymood.Models.ItemData;
+import com.example.psymood.Preferences.ApplicationPreferences;
 import com.example.psymood.R;
 
 import java.util.List;
 
 public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.MyViewHolder> {
+    private static final String KEYSTATE = "NUMSTATE";
     private Context context;
     private OnItemClickListener mlistener;
     private List<ItemData> itemDataList;
@@ -62,7 +64,7 @@ public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.My
                 myViewHolder.cardViewState.setCardBackgroundColor(ContextCompat.getColor(context,R.color.GreenCheck));
                 myViewHolder.imageViewCheck.setBackgroundResource(R.drawable.ic_check_circle);
                 itemDataList.get(i).setClicked(true);
-
+                updateNumState(1);
                 mlistener.onItemClick(itemDataList.get(i));
             }
         });
@@ -72,11 +74,14 @@ public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.My
 
     }
 
+
+
     private void checkHasCellClicked() {
 
         for(int i = 0;i < getItemCount(); i++){
             if(itemDataList.get(i).getClicked()){
                 itemDataList.get(i).setClicked(false);
+                updateNumState(-1);
                 notifyItemChanged(i);
             }
         }
@@ -93,6 +98,15 @@ public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.My
             myViewHolder.cardViewState.setCardBackgroundColor(ContextCompat.getColor(context,R.color.GreenCheck));
             myViewHolder.imageViewCheck.setBackgroundResource(R.drawable.ic_check_circle);
         }
+    }
+    private void updateNumState(int i) {
+        int contador = ApplicationPreferences.loadNumState(KEYSTATE);
+        contador =  contador + i;
+        if(contador < 0){
+            contador = 0;
+        }
+        ApplicationPreferences.saveNumState(KEYSTATE,contador);
+
     }
 
 
