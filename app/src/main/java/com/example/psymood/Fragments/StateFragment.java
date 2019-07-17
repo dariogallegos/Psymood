@@ -151,11 +151,33 @@ public class StateFragment extends Fragment {
         listItemData.add(new ItemData("Satisfecho",R.drawable.ic_mood_very_satisfied));
         listItemData.add(new ItemData("Feliz",R.drawable.ic_mood_happy));
 
-        itemGroupList.add(new ItemGroup("titulo1",listItemData));
-        itemGroupList.add(new ItemGroup("titulo1",listItemData));
-        itemGroupList.add(new ItemGroup("titulo1",listItemData));
-        itemGroupList.add(new ItemGroup("titulo1",listItemData));
-        itemGroupList.add(new ItemGroup("titulo1",listItemData));
+
+        List<ItemData> listItemData2 = new ArrayList<>();
+        listItemData2.add(new ItemData("Triste2",R.drawable.ic_mood_unhappy));
+        listItemData2.add(new ItemData("Insatisfecho2",R.drawable.ic_mood_very_dissatisfied));
+        listItemData2.add(new ItemData("Normal2",R.drawable.ic_mood_neutro));
+        listItemData2.add(new ItemData("Satisfecho2",R.drawable.ic_mood_very_satisfied));
+        listItemData2.add(new ItemData("Feliz2",R.drawable.ic_mood_happy));
+
+        List<ItemData> listItemData3 = new ArrayList<>();
+        listItemData3.add(new ItemData("Triste3",R.drawable.ic_mood_unhappy));
+        listItemData3.add(new ItemData("Insatisfecho3",R.drawable.ic_mood_very_dissatisfied));
+        listItemData3.add(new ItemData("Normal3",R.drawable.ic_mood_neutro));
+        listItemData3.add(new ItemData("Satisfecho3",R.drawable.ic_mood_very_satisfied));
+        listItemData3.add(new ItemData("Feliz3",R.drawable.ic_mood_happy));
+
+        List<ItemData> listItemData4 = new ArrayList<>();
+        listItemData4.add(new ItemData("Triste4",R.drawable.ic_mood_unhappy));
+        listItemData4.add(new ItemData("Insatisfecho4",R.drawable.ic_mood_very_dissatisfied));
+        listItemData4.add(new ItemData("Normal4",R.drawable.ic_mood_neutro));
+        listItemData4.add(new ItemData("Satisfecho4",R.drawable.ic_mood_very_satisfied));
+        listItemData4.add(new ItemData("Feliz4",R.drawable.ic_mood_happy));
+
+
+        itemGroupList.add(new ItemGroup("emociones",listItemData));
+        itemGroupList.add(new ItemGroup("energía",listItemData2));
+        itemGroupList.add(new ItemGroup("concentración",listItemData3));
+        itemGroupList.add(new ItemGroup("actividad",listItemData4));
     }
 
     /**
