@@ -21,11 +21,13 @@ import java.util.List;
 
 public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.MyViewHolder> {
     private Context context;
+    private OnItemClickListener mlistener;
     private List<ItemData> itemDataList;
 
-    public MyItemListAdapter(Context context, List<ItemData> itemDataList) {
+    public MyItemListAdapter(Context context, List<ItemData> itemDataList,OnItemClickListener listener) {
         this.context = context;
         this.itemDataList = itemDataList;
+        this.mlistener =  listener;
     }
 
     @Override
@@ -36,21 +38,58 @@ public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.My
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(final MyViewHolder myViewHolder, final int i) {
+
+        myViewHolder.bind(itemDataList.get(i), mlistener);
+
+
         //Aqui tengo la imagen y el texto de la celda.
         myViewHolder.img_item.setBackgroundResource(itemDataList.get(i).getImage());
         myViewHolder.text_view_item.setText(itemDataList.get(i).getTitle());
+
+        repaintCellData(myViewHolder,i);
+
+
         myViewHolder.cardViewState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.e("MyItemAdapater", "CardView clicked");
+
+                checkHasCellClicked();
+
                 myViewHolder.cardViewState.setCardElevation(9f);
                 myViewHolder.cardViewState.setCardBackgroundColor(ContextCompat.getColor(context,R.color.GreenCheck));
                 myViewHolder.imageViewCheck.setBackgroundResource(R.drawable.ic_check_circle);
+                itemDataList.get(i).setClicked(true);
 
             }
         });
+
+
     }
+
+    private void checkHasCellClicked() {
+
+        for(int i = 0;i < getItemCount(); i++){
+            if(itemDataList.get(i).getClicked()){
+                itemDataList.get(i).setClicked(false);
+                notifyItemChanged(i);
+            }
+        }
+    }
+
+
+
+    private void repaintCellData(MyViewHolder myViewHolder,int positionCell) {
+
+        if(itemDataList.get(positionCell).getClicked()==false) {
+            myViewHolder.cardViewState.setCardBackgroundColor(ContextCompat.getColor(context, R.color.White));
+            myViewHolder.imageViewCheck.setBackgroundResource(R.drawable.ic_add_circle_outline);
+        }
+    }
+
+
+
 
     @Override
     public int getItemCount() {
@@ -70,9 +109,21 @@ public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.My
             imageViewCheck = itemView.findViewById(R.id.imageViewCheck);
         }
 
+
+        public void bind(final ItemData itemData, final OnItemClickListener mlistener) {
+
+            //itemView es el item del ViewHolder
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mlistener.onItemClick(itemData);
+                }
+            });
+
+        }
     }
 
-    /*public interface OnItemClickListener{
-        void onItemClick();
-    }*/
+    public interface OnItemClickListener{
+        void onItemClick(ItemData itemData);
+    }
 }

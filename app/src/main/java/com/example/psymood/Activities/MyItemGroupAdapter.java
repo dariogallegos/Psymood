@@ -3,6 +3,8 @@ package com.example.psymood.Activities;
 import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,13 +35,26 @@ public class MyItemGroupAdapter extends RecyclerView.Adapter<MyItemGroupAdapter.
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(final MyViewHolder myViewHolder, int i) {
         String item_tittle = itemGroupList.get(i).getTitle();
         myViewHolder.item_title.setText(item_tittle);
 
         List<ItemData> itemDataList = itemGroupList.get(i).getItemList();
 
-        MyItemListAdapter itemListAdapter =  new MyItemListAdapter(context,itemDataList);
+        final MyItemListAdapter itemListAdapter =  new MyItemListAdapter(context, itemDataList, new MyItemListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(ItemData itemData) {
+
+                //communique al resto de celda ha sido clikada y que el resto se despinten.
+                //Comunicacion con firebase para registar el valor de la celda clickada.
+
+                Log.e("ADAPTADOR DE GRUPO","HA VUELTO AL ADAPTADOR DE GRUPO");
+
+
+            }
+        });
+
+
         myViewHolder.recyclerView_itemList.setHasFixedSize(true);
         myViewHolder.recyclerView_itemList.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false));
         myViewHolder.recyclerView_itemList.setAdapter(itemListAdapter);
@@ -51,6 +66,8 @@ public class MyItemGroupAdapter extends RecyclerView.Adapter<MyItemGroupAdapter.
     public int getItemCount() {
         return (itemGroupList != null ? itemGroupList.size() : 0) ;
     }
+
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView item_title;
@@ -64,4 +81,5 @@ public class MyItemGroupAdapter extends RecyclerView.Adapter<MyItemGroupAdapter.
 
         }
     }
+
 }
