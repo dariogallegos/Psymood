@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUI() {
         Intent intent = new Intent(getApplicationContext(), NavigationHomeActivity.class);
         startActivity(intent);
-        //finish();
+        finish();
     }
 
     private void showMessage(String message) {
