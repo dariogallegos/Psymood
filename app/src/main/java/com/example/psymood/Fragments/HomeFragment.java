@@ -32,7 +32,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
-    private static final String KEYSTATE = "NUMSTATE";
+    private static final String KEY_COUNTER_STATE = "COUNTER_STATE";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -140,7 +140,7 @@ public class HomeFragment extends Fragment {
     }
 
     private int porcentageToday() {
-        return ApplicationPreferences.loadNumState(KEYSTATE) *10;
+        return ApplicationPreferences.loadNumState(KEY_COUNTER_STATE) *10;
 
     }
 

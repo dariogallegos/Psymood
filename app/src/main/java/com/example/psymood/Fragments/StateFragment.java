@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.psymood.Activities.FirebaseInteractor;
 import com.example.psymood.Activities.MyItemGroupAdapter;
 import com.example.psymood.Models.ItemData;
 import com.example.psymood.Models.ItemGroup;
@@ -139,6 +140,27 @@ public class StateFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        uploadStateDatabase();
+    }
+
+    private void uploadStateDatabase() {
+
+        for(int i = 0; i < itemGroupList.size(); i++){
+            for(int j = 0; j < itemGroupList.get(i).getItemList().size(); j++){
+
+                ItemData itemData = itemGroupList.get(i).getItemList().get(j);
+                if(itemData.getClicked()){
+                    FirebaseInteractor.saveMoodStateInDatabase(itemGroupList.get(i).getTitle(),itemData.getTitle());
+                }
+            }
+        }
+
     }
 
     @Override
