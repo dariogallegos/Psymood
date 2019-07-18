@@ -2,6 +2,7 @@ package com.example.psymood.Fragments;
 
 
 import android.Manifest;
+import android.animation.Animator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -14,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.psymood.Activities.FirebaseInteractor;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import androidx.core.app.ActivityCompat;
@@ -54,9 +56,9 @@ public class AudioFragment extends Fragment {
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
 
     private OnFragmentInteractionListener mListener;
-    private ImageButton recordButton,playButton;
+    private ImageButton playButton;
     private Button confirmButton;
-
+    private LottieAnimationView animationView;
 
     //Boolean controll
     private boolean mStartRecording = true;
@@ -82,7 +84,10 @@ public class AudioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_audio, container, false);
-        recordButton = view.findViewById(R.id.recordButton);
+
+        //animation of record audio
+        animationView = view.findViewById(R.id.animation_view);
+
 
         //Firabase storage ini
         mStorage = FirebaseStorage.getInstance().getReference();
@@ -94,15 +99,14 @@ public class AudioFragment extends Fragment {
         mFileName += "/recorded_audio.3gp";
 
 
-        recordButton.setOnClickListener(new View.OnClickListener() {
+        animationView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //comprobacion de que los permisos estan declarados en el manifest
+                Log.e("AudioFragment","clicked");
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                            ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                            ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
 
                         onRecord(mStartRecording);
                         setMicrophoneBackground(mStartRecording);
@@ -118,7 +122,6 @@ public class AudioFragment extends Fragment {
                 }
             }
         });
-
 
         return view;
     }
@@ -236,9 +239,11 @@ public class AudioFragment extends Fragment {
     //Change background of microphone. it depends of her state
     private void setMicrophoneBackground(boolean mStartRecording) {
         if(mStartRecording){
-            recordButton.setBackgroundResource(R.drawable.ic_mic_pressed);
+            animationView.playAnimation();
+
         }else {
-            recordButton.setBackgroundResource(R.drawable.ic_mic);
+            animationView.cancelAnimation();
+            animationView.setFrame(0);
         }
     }
 
