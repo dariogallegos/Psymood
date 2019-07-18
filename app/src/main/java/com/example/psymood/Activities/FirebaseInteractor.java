@@ -46,6 +46,8 @@ public class FirebaseInteractor {
 
     public static void createInfoUserInDatabase() {
         //TODO comprobacion si el usuario ya tiene informacion o si se acaba de registrar y los campos estan vacios.
+        //TODO : chequear si ya existe, si es asi solo traemos la referencia, nada mas.
+
 
         InfoUser infoUser = new InfoUser(myCurrentUser.getDisplayName(),myCurrentUser.getEmail(),myCurrentUser.getPhotoUrl().toString());
         myRef.child(myCurrentUser.getUid()).setValue(infoUser);
@@ -59,6 +61,13 @@ public class FirebaseInteractor {
 
         DatabaseReference myAudioRef = myRef.child(myCurrentUser.getUid()).child("audiosUser").child(currentDateandTime);
         myAudioRef.setValue(urlAudio);
+    }
+
+    public static void saveMoodStateInDatabase(String typeState, String valueState){
+
+        DatabaseReference myStateRef =  myRef.child(myCurrentUser.getUid()).child("stateUser").child(typeState);
+        myStateRef.setValue(valueState);
+
     }
 
 
