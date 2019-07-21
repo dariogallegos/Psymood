@@ -131,7 +131,7 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         //Usremos Glide para cargar la photo.
 
         //Glide.with(this).load(currentUser.getPhotoUrl()).into(navUserPhoto);
-        Glide.with(this).load(currentUser.getPhotoUrl()).placeholder(R.drawable.support).into(navUserPhoto);
+        Glide.with(this).load(currentUser.getPhotoUrl()).placeholder(R.drawable.default_photo_profile).into(navUserPhoto);
     }
 
     //flechita de adnroid para atras para cerrar el menu lateral

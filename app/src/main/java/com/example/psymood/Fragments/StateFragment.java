@@ -198,11 +198,11 @@ public class StateFragment extends Fragment {
 
 
         List<ItemData> listItemData2 = new ArrayList<>();
-        listItemData2.add(new ItemData("Triste2", R.drawable.ic_mood_unhappy));
-        listItemData2.add(new ItemData("Insatisfecho2", R.drawable.ic_mood_very_dissatisfied));
-        listItemData2.add(new ItemData("Normal2", R.drawable.ic_mood_neutro));
-        listItemData2.add(new ItemData("Satisfecho2", R.drawable.ic_mood_very_satisfied));
-        listItemData2.add(new ItemData("Feliz2", R.drawable.ic_mood_happy));
+        listItemData2.add(new ItemData("Exhausta", R.drawable.ic_energy_very_low));
+        listItemData2.add(new ItemData("Baja", R.drawable.ic_energy_low));
+        listItemData2.add(new ItemData("Normal", R.drawable.ic_energy_normal));
+        listItemData2.add(new ItemData("Alta", R.drawable.ic_energy_high));
+        listItemData2.add(new ItemData("Energizada", R.drawable.ic_energy_very_high));
 
         List<ItemData> listItemData3 = new ArrayList<>();
         listItemData3.add(new ItemData("Triste3", R.drawable.ic_mood_unhappy));

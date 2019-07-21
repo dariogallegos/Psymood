@@ -20,7 +20,7 @@
         android:contentDescription="@string/todo"
         android:minWidth="90dp"
         android:minHeight="90dp"
-        android:src="@drawable/dario"
+        android:src="@drawable/default_photo_profile"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="@+id/guideline2"

@@ -127,7 +127,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         if(pickedImageUri == null){
-            pickedImageUri = getUriToDrawable(getApplicationContext(),R.drawable.support);
+            pickedImageUri = getUriToDrawable(getApplicationContext(),R.drawable.default_photo_profile);
         }
 
         //Guardamos la referencia en imafeFilePath
