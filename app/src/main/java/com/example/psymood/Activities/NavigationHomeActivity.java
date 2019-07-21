@@ -8,6 +8,8 @@ import com.example.psymood.Preferences.ApplicationPreferences;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.View;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -60,7 +62,7 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
 
         //Barra superior que engloba al toobar
         appBarLayout = findViewById(R.id.appBarLayout);
-        appBarLayout.setElevation(0);
+
 
         //Barra con las opciones para abrir el menu y mas cosas
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -111,6 +113,7 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         if(savedInstanceState == null){
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_container,new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
+            appBarLayout.setElevation(0);
         }
     }
 
@@ -170,8 +173,10 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        //la sombra de la barra superior desaparece cuando iniciamos cada fragment.
+        appBarLayout.setElevation(0);
 
+        // Handle navigation view item clicks here.
 
         switch (item.getItemId()){
             case R.id.nav_home:
@@ -202,6 +207,7 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
     }
 
     private boolean onNavigationBottomItemSelected(MenuItem menuItem){
+        appBarLayout.setElevation(0);
         Fragment selectFragment = null;
         switch (menuItem.getItemId()){
             case R.id.nav_home:
