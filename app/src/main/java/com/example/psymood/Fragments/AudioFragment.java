@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -29,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -44,6 +46,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,12 +56,23 @@ import java.util.Date;
  */
 public class AudioFragment extends Fragment {
 
+    private String[] sentencesUser = new String[]{
+            "Todos los que crecimos fuimos alguna vez niños, pero pocos lo recuerdan",
+            "Facilita la identificacion de especies desconocidas",
+            "Cuántos más palos me da el mundo... ¡más limonadas que me tomo!",
+            "Todo depende de lo que se espero de ellos y de lo que se este dispuesto a darles.",
+            "No es mío, ya me gustaría a mi que lo fuera."
+    };
+
+
+
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
 
     private OnFragmentInteractionListener mListener;
     private ImageButton playButton;
     private Button confirmButton;
     private LottieAnimationView animationView;
+    private TextView ramdomSentence;
 
     //Boolean controll
     private boolean mStartRecording = true;
@@ -80,10 +94,16 @@ public class AudioFragment extends Fragment {
     }
 
 
+
+    //Cada vez que inflamos un fragment pasa por el metodo onCreateView
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_audio, container, false);
+
+        //Select a sentence to show at user.
+        final String sentence = selectSentenceToShow();
+        ramdomSentence =  view.findViewById(R.id.ramdomSentence);
 
         //animation of record audio
         animationView = view.findViewById(R.id.animation_view);
@@ -108,6 +128,9 @@ public class AudioFragment extends Fragment {
                             ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
                             ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
 
+                        ramdomSentence.setText(sentence);
+                        ramdomSentence.setTypeface(ramdomSentence.getTypeface(), Typeface.BOLD);
+
                         onRecord(mStartRecording);
                         setMicrophoneBackground(mStartRecording);
                         mStartRecording = !mStartRecording;
@@ -122,8 +145,15 @@ public class AudioFragment extends Fragment {
                 }
             }
         });
-
         return view;
+    }
+
+
+    private String selectSentenceToShow() {
+
+        Random random = new Random();
+        int randomIndex = random.nextInt(sentencesUser.length);
+        return  sentencesUser[randomIndex];
     }
 
 
