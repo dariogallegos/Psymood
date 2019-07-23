@@ -2,18 +2,28 @@ package com.example.psymood.Models;
 
 public class ItemTask {
 
-    String titleTask;
-    String numTask;
-    int colorTask;
-    int iconTask;
+    private String titleTask;
+    private String numTask;
+    private int colorTask;
+    private int iconTask;
+    private int menuItem;
 
     public ItemTask(){}
 
-    public ItemTask(String titleTask, String numTask, int colorTask,int iconTask) {
+    public ItemTask(String titleTask, String numTask, int colorTask,int iconTask,int menuItem) {
         this.titleTask = titleTask;
         this.numTask = numTask;
         this.colorTask =  colorTask;
         this.iconTask = iconTask;
+        this.menuItem = menuItem;
+    }
+
+    public int getMenuItem() {
+        return menuItem;
+    }
+
+    public void setMenuItem(int menuItem) {
+        this.menuItem = menuItem;
     }
 
     public int getIconTask() {
