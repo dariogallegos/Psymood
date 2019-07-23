@@ -9,7 +9,6 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.View;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -36,6 +35,7 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
 
     private DrawerLayout drawer;
     private AppBarLayout appBarLayout;
+    private BottomNavigationView bottomNav;
 
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
@@ -69,7 +69,7 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         setSupportActionBar(toolbar);
 
         //Barra menu bottom
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -98,16 +98,6 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
 
     }
 
-    private void uploadInfoUserDataBase() {
-
-        /*DatabaseReference myRef = database.getReference("InfoUser");
-
-        //TODO comprobacion si el usuario ya tiene informacion o si se acaba de registrar y los campos estan vacios.
-
-        InfoUser infoUser = new InfoUser(currentUser.getDisplayName(),currentUser.getEmail(),currentUser.getPhotoUrl().toString());
-        myRef.child(currentUser.getUid()).setValue(infoUser);*/
-
-    }
 
     private void initViewNavigation(Bundle savedInstanceState, NavigationView navigationView) {
         if(savedInstanceState == null){
@@ -134,7 +124,7 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         Glide.with(this).load(currentUser.getPhotoUrl()).placeholder(R.drawable.default_photo_profile).into(navUserPhoto);
     }
 
-    //flechita de adnroid para atras para cerrar el menu lateral
+    //flechita de android para atras para cerrar el menu lateral
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -181,21 +171,25 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         switch (item.getItemId()){
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_container,new HomeFragment()).commit();
+                bottomNav.setSelectedItemId(item.getItemId());
                 break;
-            case R.id.nav_profile:
+            case R.id.nav_add:
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_container,new StateFragment()).commit();
+                bottomNav.setSelectedItemId(item.getItemId());
                 break;
-            case R.id.nav_settings:
+            case R.id.nav_camera:
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_container,new CameraFragment()).commit();
+                bottomNav.setSelectedItemId(item.getItemId());
+                break;
+            case R.id.nav_audio:
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_container,new AudioFragment()).commit();
+                bottomNav.setSelectedItemId(item.getItemId());
                 break;
             case R.id.nav_singOut:
                 FirebaseAuth.getInstance().signOut();
                 Intent intent =  new Intent(getApplicationContext(),LoginActivity.class);
                 startActivity(intent);
                 finish();
-                break;
-            case R.id.nav_map:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_container,new HomeFragment()).commit();
                 break;
             default:
                 Toast.makeText(this,"Other opcion",Toast.LENGTH_SHORT).show();
@@ -208,8 +202,14 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
 
     private boolean onNavigationBottomItemSelected(MenuItem menuItem){
         appBarLayout.setElevation(0);
+        Fragment selectFragment = selectFragmentById(menuItem.getItemId());
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_container,selectFragment).commit();
+        return true;
+    }
+
+    private Fragment selectFragmentById(int itemId) {
         Fragment selectFragment = null;
-        switch (menuItem.getItemId()){
+        switch (itemId) {
             case R.id.nav_home:
                 selectFragment = new HomeFragment();
                 break;
@@ -223,9 +223,7 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
                 selectFragment = new AudioFragment();
                 break;
         }
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_container,selectFragment).commit();
-        return true;
+        return selectFragment;
     }
 
     @Override
@@ -233,6 +231,13 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         if(appBarLayout!= null){
             appBarLayout.setElevation(elevation);
         }
+    }
+
+    @Override
+    public void onChangeFragment(int menuItem) {
+        Fragment selectFragment = selectFragmentById(menuItem);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_container,selectFragment).commit();
+        bottomNav.setSelectedItemId(menuItem);
     }
 
 }
