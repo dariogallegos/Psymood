@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import com.example.psymood.Activities.MyTaskAdapter;
 import com.example.psymood.Models.ItemTask;
 import com.example.psymood.Preferences.ApplicationPreferences;
 import com.example.psymood.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,12 +48,6 @@ public class HomeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    //Elements to Homefragment
-    ProgressBar progressBarDay;
-    TextView percentageTextView;
-    NestedScrollView scrollViewHome;
-
-    RecyclerView recyclerViewTask;
     MyTaskAdapter taskAdapter;
     List<ItemTask> listItemTask;
 
@@ -92,25 +89,32 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         loadTaskList();
 
-        scrollViewHome = view.findViewById(R.id.scrollViewHome);
+        NestedScrollView scrollViewHome = view.findViewById(R.id.scrollViewHome);
 
+        //Firebase instace and obtain current user
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        //TextView with name user
+        TextView nameUserHome = view.findViewById(R.id.nameUserHome);
+        nameUserHome.setText(currentUser.getDisplayName());
 
         int percentage = porcentageToday();
         //TextView with porcentage of today
-        percentageTextView = view.findViewById(R.id.percentageTextView);
+        TextView percentageTextView = view.findViewById(R.id.percentageTextView);
         percentageTextView.setText(String.valueOf(percentage));
 
         //Progress bar to show the progress day. Look in share preferences if there are changes.
-        progressBarDay = view.findViewById(R.id.progressBarDay);
+        ProgressBar progressBarDay = view.findViewById(R.id.progressBarDay);
         progressBarDay.setProgress(percentage);
 
-
-
         //recyclerView task
-        recyclerViewTask = view.findViewById(R.id.recyclerViewTask);
-        taskAdapter = new MyTaskAdapter(getContext(),listItemTask);
-
+        RecyclerView recyclerViewTask = view.findViewById(R.id.recyclerViewTask);
+        taskAdapter = new MyTaskAdapter(getContext(), listItemTask, new MyTaskAdapter.OnTaskClickListener() {
+            @Override
+            public void onTaskClick(ItemTask itemTask) {
+                mListener.onChangeFragment(itemTask.getMenuItem());
+            }
+        });
 
         //RecyclerView and Adpater
         recyclerViewTask.setHasFixedSize(true);
@@ -141,7 +145,6 @@ public class HomeFragment extends Fragment {
 
     private int porcentageToday() {
         return ApplicationPreferences.loadNumState(KEY_COUNTER_STATE) *10;
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -181,16 +184,17 @@ public class HomeFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(int elevation);
+        void onChangeFragment(int menuItem);
     }
 
 
     private void loadTaskList() {
         listItemTask = new ArrayList<>();
-        listItemTask.add(new ItemTask("Prueba a hacerte un selfie","2",R.color.PurpleTask,R.drawable.ic_task_camera));
-        listItemTask.add(new ItemTask("¿Grabamos un vídeo?","3",R.color.PinkTask,R.drawable.ic_task_video));
-        listItemTask.add(new ItemTask("Hey, ¿como te encuentras?","6",R.color.GreenTask,R.drawable.ic_task_face));
-        listItemTask.add(new ItemTask("Y si me dices algo?","10",R.color.YellowTask,R.drawable.ic_task_mic));
-        listItemTask.add(new ItemTask("dario","8",R.color.VioletTask,R.drawable.ic_task_mood));
+        listItemTask.add(new ItemTask("Prueba a hacerte un selfie","2",R.color.PurpleTask,R.drawable.ic_task_camera,R.id.nav_camera));
+        listItemTask.add(new ItemTask("¿Grabamos un vídeo?","3",R.color.PinkTask,R.drawable.ic_task_video,R.id.nav_camera));
+        listItemTask.add(new ItemTask("Hey, ¿como te encuentras?","6",R.color.GreenTask,R.drawable.ic_task_face,R.id.nav_add));
+        listItemTask.add(new ItemTask("Y si me dices algo?","10",R.color.YellowTask,R.drawable.ic_task_mic,R.id.nav_audio));
+        listItemTask.add(new ItemTask("dario","8",R.color.VioletTask,R.drawable.ic_task_mood,R.id.nav_add));
 
     }
 }
