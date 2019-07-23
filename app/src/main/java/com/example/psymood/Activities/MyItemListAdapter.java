@@ -3,6 +3,7 @@ package com.example.psymood.Activities;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +33,7 @@ public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.My
         this.mlistener =  listener;
     }
 
+    @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cell_list, viewGroup , false);
@@ -40,8 +42,7 @@ public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.My
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder myViewHolder, final int i) {
-
+    public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int i) {
 
         myViewHolder.bind(itemDataList.get(i), mlistener);
 
@@ -51,7 +52,6 @@ public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.My
 
         repaintCellData(myViewHolder,i);
 
-
         //TODO si clicko y el anterior elemento era el mismo que yo entonces desclicko
         myViewHolder.cardViewState.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,19 +59,15 @@ public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.My
                 Log.e("MyItemAdapater", "CardView clicked");
 
                 checkHasCellClicked();
-
-                myViewHolder.cardViewState.setCardElevation(9f);
+                //CardView state
                 myViewHolder.cardViewState.setCardBackgroundColor(ContextCompat.getColor(context,R.color.GreenCheck));
                 myViewHolder.imageViewCheck.setBackgroundResource(R.drawable.ic_check_circle);
+
                 itemDataList.get(i).setClicked(true);
                 updateNumState(1);
                 mlistener.onItemClick(itemDataList.get(i));
             }
         });
-
-
-
-
     }
 
 
@@ -89,16 +85,16 @@ public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.My
 
     private void repaintCellData(MyViewHolder myViewHolder,int positionCell) {
 
-        if(itemDataList.get(positionCell).getClicked()==false) {
+        if(!itemDataList.get(positionCell).getClicked()) {
             myViewHolder.cardViewState.setCardBackgroundColor(ContextCompat.getColor(context, R.color.White));
             myViewHolder.imageViewCheck.setBackgroundResource(R.color.White);
         }
         else{
-            myViewHolder.cardViewState.setCardElevation(9f);
             myViewHolder.cardViewState.setCardBackgroundColor(ContextCompat.getColor(context,R.color.GreenCheck));
             myViewHolder.imageViewCheck.setBackgroundResource(R.drawable.ic_check_circle);
         }
     }
+
     private void updateNumState(int i) {
         int contador = ApplicationPreferences.loadNumState(KEY_COUNTER_STATE);
         contador =  contador + i;
@@ -106,7 +102,6 @@ public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.My
             contador = 0;
         }
         ApplicationPreferences.saveNumState(KEY_COUNTER_STATE,contador);
-
     }
 
 

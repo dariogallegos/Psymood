@@ -45,6 +45,8 @@ public class FirebaseInteractor {
     }
 
     public static void createInfoUserInDatabase() {
+
+
         //TODO comprobacion si el usuario ya tiene informacion o si se acaba de registrar y los campos estan vacios.
         //TODO : chequear si ya existe, si es asi solo traemos la referencia, nada mas.
 

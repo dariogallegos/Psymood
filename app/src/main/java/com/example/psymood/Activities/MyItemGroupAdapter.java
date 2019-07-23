@@ -1,6 +1,8 @@
 package com.example.psymood.Activities;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +30,7 @@ public class MyItemGroupAdapter extends RecyclerView.Adapter<MyItemGroupAdapter.
         this.itemGroupList = itemGroupList;
     }
 
+    @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cell_group, viewGroup , false);
@@ -36,7 +39,7 @@ public class MyItemGroupAdapter extends RecyclerView.Adapter<MyItemGroupAdapter.
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
         String item_tittle = itemGroupList.get(i).getTitle();
         myViewHolder.item_title.setText(item_tittle);
 
