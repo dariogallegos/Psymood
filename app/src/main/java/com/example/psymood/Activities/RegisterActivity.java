@@ -14,24 +14,35 @@ import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.psymood.Helpers.SnackbarHelper;
 import com.example.psymood.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.util.Objects;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private ImageView regUserPhoto;
@@ -43,16 +54,11 @@ public class RegisterActivity extends AppCompatActivity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
-
-
-
     Uri pickedImageUri;
     private EditText userName, userMail, userPassword, userConfirm;
+    private TextView linkLogIn;
     private Button buttonRegister;
     private FirebaseAuth mAuth;
-
-
-
 
 
     @Override
@@ -66,6 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
         userPassword = findViewById(R.id.regPassword);
         userConfirm = findViewById(R.id.regConfirmPass);
         buttonRegister = findViewById(R.id.regButton);
+        linkLogIn = findViewById(R.id.linkLogIn);
 
         //firebase authentication
         mAuth = FirebaseAuth.getInstance();
@@ -90,13 +97,26 @@ public class RegisterActivity extends AppCompatActivity {
                 final String confirm = userConfirm.getText().toString();
                 final String name = userName.getText().toString();
 
-                if(email.isEmpty() || name.isEmpty() || password.isEmpty() || !password.equals(confirm)){
+                if(email.isEmpty() || name.isEmpty() || password.isEmpty() || confirm.isEmpty()){
                     //Something goes wrong, then we show a message with the error
                     showMessage("Por favor, verifica todos los campos");
-                }else{
+                }
+                else if(!password.equals(confirm)){
+                    showMessage("Las contraseñas son distintas");
+                }
+                else{
                     //Everithing is ok and all fields is correct -> create a user account
+                    buttonRegister.setVisibility(View.INVISIBLE);
                     createUserAccount(email,name,password);
                 }
+            }
+        });
+
+        linkLogIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -114,11 +134,29 @@ public class RegisterActivity extends AppCompatActivity {
                     updateUserInfo(name,pickedImageUri, mAuth.getCurrentUser());
                 }
                 else{
-                    showMessage("Fallo en la creacion de la cuenta");
+                    try {
+                        throw Objects.requireNonNull(task.getException());
+                    } catch (FirebaseAuthUserCollisionException e){
+                        //If email already registered.
+                        userMail.setError(getString(R.string.error_email_alredy_exist));
+
+                    } catch (FirebaseAuthWeakPasswordException e) {
+                        //The password is so weak
+                        userPassword.setError(getString(R.string.error_weak_password));
+
+                    } catch (FirebaseAuthInvalidCredentialsException e) {
+                        //If email are in incorrect format
+                        userPassword.setError(getString(R.string.error_invalid_password));
+
+                    } catch (Exception e) {
+                        showMessage(e.toString());
+                    }
+                    buttonRegister.setVisibility(View.VISIBLE);
                 }
             }
         });
     }
+
 
     //Method to updtade user photo and name
     private void updateUserInfo(final String name, Uri pickedImageUri, final FirebaseUser currentUser){

@@ -28,4 +28,8 @@
     <string name="audio">Audio</string>
     <string name="camera">Camera</string>
     <string name="state">State</string>
+    <string name="error_weak_password">minímo 6 caracteres</string>
+    <string name="error_invalid_password">contraseña no válida</string>
+    <string name="error_invalid_email">correo  no válido</string>
+    <string name="error_email_alredy_exist">email ya existente</string>
 </resources>

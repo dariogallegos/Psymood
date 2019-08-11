@@ -1,6 +1,5 @@
 package com.example.psymood.Models;
 
-import android.icu.text.IDNA;
 
 public class InfoUser {
 
@@ -8,6 +7,9 @@ public class InfoUser {
     String emailUser = null;
     String profilePhotoUser = null;
     String psyAudio = null;
+    String passwordUser= null;
+
+
 
     public InfoUser(){}
 
@@ -18,6 +20,10 @@ public class InfoUser {
         this.profilePhotoUser = profilePhotoUser;
     }
 
+    public InfoUser(String emailUser, String passwordUser){
+        this.emailUser = emailUser;
+        this.passwordUser = passwordUser;
+    }
 
     public String getNameUser() {
         return nameUser;
@@ -51,4 +57,11 @@ public class InfoUser {
         this.psyAudio = psyAudio;
     }
 
+    public String getPasswordUser() {
+        return passwordUser;
+    }
+
+    public void setPasswordUser(String passwordUser) {
+        this.passwordUser = passwordUser;
+    }
 }

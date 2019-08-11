@@ -40,7 +40,6 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
 
-    FirebaseDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
