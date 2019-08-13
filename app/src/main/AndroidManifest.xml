@@ -19,7 +19,6 @@
         android:supportsRtl="true"
         android:testOnly="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.SignActivity"></activity>
         <activity
             android:name=".Activities.NavigationHomeActivity"
             android:label="@string/title_activity_navigation_home"></activity>
