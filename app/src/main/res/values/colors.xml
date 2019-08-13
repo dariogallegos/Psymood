@@ -12,6 +12,7 @@
     <color name="PsymoodColor">#fa7f6c</color>
     <color name="GreyMedium">#9F9FA5</color>
     <color name="GreyMediumLight">#B5B5B8</color>
+    <color name="GreyDialog">#c9cdd4</color>
     <color name="GreenTask">#46b685</color>
     <color name="GreenCheck">#20d476</color>
     <color name="YellowTask">#fbc37c</color>
