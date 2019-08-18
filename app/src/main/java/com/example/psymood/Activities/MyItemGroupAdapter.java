@@ -21,7 +21,9 @@ import com.example.psymood.R;
 import java.util.List;
 
 public class MyItemGroupAdapter extends RecyclerView.Adapter<MyItemGroupAdapter.MyViewHolder> {
-    static final String KEYNAME = "MOOD";
+
+    private static final String KEYNAME = "MOOD";
+
     private Context context;
     private List<ItemGroup> itemGroupList;
 
@@ -54,18 +56,15 @@ public class MyItemGroupAdapter extends RecyclerView.Adapter<MyItemGroupAdapter.
                 //Comunicacion con firebase para registar el valor de la celda clickada.
 
                 ApplicationPreferences.saveListGroup(KEYNAME,itemGroupList);
-
-
             }
         });
-
 
         myViewHolder.recyclerView_itemList.setHasFixedSize(true);
         myViewHolder.recyclerView_itemList.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false));
         myViewHolder.recyclerView_itemList.setAdapter(itemListAdapter);
         myViewHolder.recyclerView_itemList.setNestedScrollingEnabled(false);//Importante, para que no se pisen las vistas
-
     }
+
 
     @Override
     public int getItemCount() {

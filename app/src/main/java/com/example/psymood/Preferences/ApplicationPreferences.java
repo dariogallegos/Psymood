@@ -23,6 +23,7 @@ public class ApplicationPreferences {
         }
     }
 
+
     public static void saveNumState(String KEYNAME, int numState) {
         SharedPreferences.Editor prefersEditor = mSharedPreferences.edit();
         prefersEditor.putInt(KEYNAME, numState);
@@ -63,5 +64,15 @@ public class ApplicationPreferences {
         String json = mSharedPreferences.getString(KEYNAME, "");
         InfoUser obj = gson.fromJson(json, InfoUser.class);
         return obj;
+    }
+
+    public static void saveDate(String KEYNAME, String date) {
+        SharedPreferences.Editor prefersEditor = mSharedPreferences.edit();
+        prefersEditor.putString(KEYNAME, date);
+        prefersEditor.apply();
+    }
+
+    public static String loadDate(String KEYNAME) {
+        return mSharedPreferences.getString(KEYNAME, "0000-00-00");
     }
 }

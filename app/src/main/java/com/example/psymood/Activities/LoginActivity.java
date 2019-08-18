@@ -34,7 +34,7 @@ import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String KEYNAME = "REMEMBER_ME";
+    private static final String KEY_INFO_USER = "INFO_USER";
 
     private EditText userMail, userPassword;
     private Button buttonLogin;
@@ -91,9 +91,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loadInfoUser() {
-        if (ApplicationPreferences.loadInfoUser(KEYNAME)!= null) {
+
+        InfoUser infoUser = ApplicationPreferences.loadInfoUser(KEY_INFO_USER);
+        if (infoUser != null) {
             // The user has a saved data in shared preferences, most likely the user has already logged in to psymood.
-            InfoUser infoUser = ApplicationPreferences.loadInfoUser(KEYNAME);
             userMail.setText(infoUser.getEmailUser());
             userPassword.setText(infoUser.getPasswordUser());
         }
@@ -102,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
     private void rememberMeUser(String mail, String password) {
         if (rememberMe.isChecked()) {
             InfoUser infoUser = new InfoUser(mail, password);
-            ApplicationPreferences.saveInfoUser(KEYNAME, infoUser);
+            ApplicationPreferences.saveInfoUser(KEY_INFO_USER, infoUser);
         }
     }
 

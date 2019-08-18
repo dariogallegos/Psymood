@@ -37,7 +37,8 @@ public class StateFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    static final String KEYNAME ="MOOD";
+    private static final String KEYNAME = "MOOD";
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -45,7 +46,6 @@ public class StateFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private RecyclerView recyclerViewGroups;
     private List<ItemGroup> itemGroupList;
-    private FloatingActionButton buttonCompleteState;
 
     public StateFragment() {
         // Required empty public constructor
@@ -73,25 +73,21 @@ public class StateFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_state, container, false);
+
         itemGroupList = new ArrayList<>();
 
-
-        //buttonCompleteState = view.findViewById(R.id.buttonCompleteState);
         recyclerViewGroups = view.findViewById(R.id.my_recycler_view);
 
         recyclerViewGroups.setHasFixedSize(true);
         recyclerViewGroups.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
+        //Load the info to see in the recycler view states
         loadGroupList();
 
-
-        MyItemGroupAdapter adapter=new MyItemGroupAdapter(getContext(),itemGroupList);
+        MyItemGroupAdapter adapter = new MyItemGroupAdapter(getContext(), itemGroupList);
         recyclerViewGroups.setAdapter(adapter);
 
         final int initialTopPosition = recyclerViewGroups.getTop();
@@ -105,35 +101,21 @@ public class StateFragment extends Fragment {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if(recyclerViewGroups.getChildAt(0).getTop() < initialTopPosition ) {
+                if (recyclerViewGroups.getChildAt(0).getTop() < initialTopPosition) {
                     mListener.onFragmentInteraction(16);
-                }
-                else{
+                } else {
                     mListener.onFragmentInteraction(0);
                 }
             }
         });
 
-
-        /*buttonCompleteState.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("StateFragment","Button is clicked");
-            }
-        });*/
-
         return view;
-
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -141,7 +123,6 @@ public class StateFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
-
 
     @Override
     public void onDestroyView() {
@@ -151,12 +132,12 @@ public class StateFragment extends Fragment {
 
     private void uploadStateDatabase() {
 
-        for(int i = 0; i < itemGroupList.size(); i++){
-            for(int j = 0; j < itemGroupList.get(i).getItemList().size(); j++){
+        for (int i = 0; i < itemGroupList.size(); i++) {
+            for (int j = 0; j < itemGroupList.get(i).getItemList().size(); j++) {
 
                 ItemData itemData = itemGroupList.get(i).getItemList().get(j);
-                if(itemData.getClicked()){
-                    FirebaseInteractor.saveMoodStateInDatabase(itemGroupList.get(i).getTitle(),itemData.getTitle());
+                if (itemData.getClicked()) {
+                    FirebaseInteractor.saveMoodStateInDatabase(itemGroupList.get(i).getTitle(), itemData.getTitle());
                 }
             }
         }
@@ -169,25 +150,15 @@ public class StateFragment extends Fragment {
         mListener = null;
     }
 
-
-    //TODO Comprobar si es la primera vez que entre, si es asi cargarla de cero. Si no es asi entonces cargar la lista
-    //TODO del sharepreferences.
-
+    //we check if the first time to enter in the application, and if it is , load the default list. Else, then load the Share preferences list.
     private void loadGroupList() {
-
-        if(ApplicationPreferences.loadListGroup(KEYNAME) != null){
-
+        if (ApplicationPreferences.loadListGroup(KEYNAME) != null) {
             //Comprobar las fechas.Si la fecha es hoy cargamos sharePreferences, si no cargarmos la lista default.
-
             itemGroupList = ApplicationPreferences.loadListGroup(KEYNAME);
-
-
-        }else {
-            defaultGroupList();
         }
     }
 
-    private void defaultGroupList() {
+    /*private void defaultGroupList() {
 
         List<ItemData> listItemData = new ArrayList<>();
         listItemData.add(new ItemData("Triste", R.drawable.ic_mood_unhappy));
@@ -221,7 +192,7 @@ public class StateFragment extends Fragment {
         itemGroupList.add(new ItemGroup("energía", listItemData2));
         itemGroupList.add(new ItemGroup("concentración", listItemData3));
         itemGroupList.add(new ItemGroup("actividad", listItemData4));
-    }
+    }*/
 
     /**
      * This interface must be implemented by activities that contain this

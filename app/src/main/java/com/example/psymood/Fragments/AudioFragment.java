@@ -20,6 +20,7 @@ import android.os.Environment;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.psymood.Activities.FirebaseInteractor;
 import com.example.psymood.Helpers.CountUpTimer;
+import com.example.psymood.Preferences.ApplicationPreferences;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import androidx.core.app.ActivityCompat;
@@ -69,6 +70,10 @@ public class AudioFragment extends Fragment {
             "Todo depende de lo que se espero de ellos y de lo que se este dispuesto a darles.",
             "No es mío, ya me gustaría a mi que lo fuera."
     };
+
+
+    private static final String KEY_COUNTER = "COUNTER";
+    private static final String KEY_NUM_AUDIO = "NUM_AUDIO";
 
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
@@ -166,7 +171,7 @@ public class AudioFragment extends Fragment {
             mRecorder = null;
         }
 
-        Log.e("AudioFragment","he vuelto a entrar en le fragmnet");
+        Log.e("AudioFragment", "he vuelto a entrar en le fragmnet");
     }
 
     private String selectSentenceToShow() {
@@ -251,7 +256,7 @@ public class AudioFragment extends Fragment {
 
         final Long millis = durationAudio();
 
-        int maxValueProgress = (int) (millis/1);
+        int maxValueProgress = (int) (millis / 1);
         progressBarAudio.setMax(maxValueProgress);
         progressBarAudio.setProgress(0);
 
@@ -294,21 +299,21 @@ public class AudioFragment extends Fragment {
     }
 
     private void playButtonBackground() {
-        if(mStartPlaying)
+        if (mStartPlaying)
             playButton.setBackgroundResource(R.drawable.ic_round_pause);
         else
             playButton.setBackgroundResource(R.drawable.ic_round_play_arrow);
     }
 
     private void updateProgressAudio(final Long millis) {
-        if(mStartPlaying){
+        if (mStartPlaying) {
             timer = new CountUpTimer(millis, 1) {
                 public void onTick(int second) {
                     progressBarAudio.setProgress(second);
                 }
             };
             timer.start();
-        }else{
+        } else {
             timer.cancel();
         }
         // --> pause the timer
@@ -407,9 +412,8 @@ public class AudioFragment extends Fragment {
                     @Override
                     public void onSuccess(Uri uri) {
                         FirebaseInteractor.saveAudioInDatabase(uri.toString());
-                        Toast.makeText(getContext(), "Upload successfull", Toast.LENGTH_SHORT).show();
-                        //mListener.onFragmentInteraction(uri.toString());
-
+                        //Toast.makeText(getContext(), "Upload successfull", Toast.LENGTH_SHORT).show();
+                        updateCounterAudio();
                     }
                 });
 
@@ -424,6 +428,16 @@ public class AudioFragment extends Fragment {
             startRecording();
         } else {
             stopRecording();
+        }
+    }
+
+    private void updateCounterAudio() {
+
+        int numAudios = ApplicationPreferences.loadNumState(KEY_NUM_AUDIO);
+        if (numAudios < 1) {
+            int cont = ApplicationPreferences.loadNumState(KEY_COUNTER) + 2;
+            ApplicationPreferences.saveNumState(KEY_NUM_AUDIO, 1);
+            ApplicationPreferences.saveNumState(KEY_COUNTER, cont);
         }
     }
 
@@ -454,11 +468,10 @@ public class AudioFragment extends Fragment {
         player = null;
     }
 
-
     private void finishedPlaying() {
 
         //TODO Error al intentar reproducir un audio que ya esta en ejecucion.
-        if(!mStartPlaying) {
+        if (!mStartPlaying) {
             player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
@@ -470,15 +483,16 @@ public class AudioFragment extends Fragment {
 
     }
 
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        try{
+        try {
             mRecorder.stop();
             mRecorder.release();
             mRecorder = null;
 
-        }catch (NullPointerException | IllegalStateException e) {
+        } catch (NullPointerException | IllegalStateException e) {
             Log.e(LOG_TAG, "se ha producido al querer cerrar el audio cuando ya ha sido cerrado");
         }
     }

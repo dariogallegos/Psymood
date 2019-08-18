@@ -3,6 +3,7 @@ package com.example.psymood.Activities;
 import android.util.Log;
 
 import com.example.psymood.Models.InfoUser;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,11 +19,11 @@ public class FirebaseInteractor {
     private static DatabaseReference myRef;
     private static FirebaseUser myCurrentUser;
 
-    public static void initUI(FirebaseUser currentUser) {
+    public static void initUI() {
 
         if (myRef == null) {
             myRef = FirebaseDatabase.getInstance().getReference("InfoUser");
-            myCurrentUser = currentUser;
+            myCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         }
 
 
@@ -44,13 +45,14 @@ public class FirebaseInteractor {
 
     }
 
+
+
+    //TODO comprobacion si el usuario ya tiene informacion o si se acaba de registrar y los campos estan vacios.
+    //TODO : chequear si ya existe, si es asi solo traemos la referencia, nada mas.
+
     public static void createInfoUserInDatabase() {
 
-
-        //TODO comprobacion si el usuario ya tiene informacion o si se acaba de registrar y los campos estan vacios.
-        //TODO : chequear si ya existe, si es asi solo traemos la referencia, nada mas.
-
-
+        myCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         InfoUser infoUser = new InfoUser(myCurrentUser.getDisplayName(),myCurrentUser.getEmail(),myCurrentUser.getPhotoUrl().toString());
         myRef.child(myCurrentUser.getUid()).setValue(infoUser);
 
@@ -71,6 +73,5 @@ public class FirebaseInteractor {
         myStateRef.setValue(valueState);
 
     }
-
 
 }

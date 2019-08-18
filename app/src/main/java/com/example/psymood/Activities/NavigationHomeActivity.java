@@ -9,6 +9,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.View;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -33,11 +34,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class NavigationHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, StateFragment.OnFragmentInteractionListener,HomeFragment.OnFragmentInteractionListener{
 
+
     private DrawerLayout drawer;
     private AppBarLayout appBarLayout;
     private BottomNavigationView bottomNav;
 
-    FirebaseAuth mAuth;
     FirebaseUser currentUser;
 
 
@@ -47,16 +48,14 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         setContentView(R.layout.activity_navigation_home);
 
         //Instanciamos el aplication preferences
-        ApplicationPreferences.init(getApplicationContext());
+        //ApplicationPreferences.init(getApplicationContext());
 
         //Firebase instace and obtain current user
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //Firebase database instance and obtain reference of database.
         //database = FirebaseDatabase.getInstance();
-        FirebaseInteractor.initUI(currentUser);
+        FirebaseInteractor.initUI();
 
 
         //Barra superior que engloba al toobar
@@ -88,6 +87,7 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         mDrawertoggle.syncState();
 
         // initViewNavigation marca en el menu la primera opcion , de forma que cuando lo abres ya esta un item seleccionado.
+
         initViewNavigation(savedInstanceState,navigationView);
         updateNavHeader();
 

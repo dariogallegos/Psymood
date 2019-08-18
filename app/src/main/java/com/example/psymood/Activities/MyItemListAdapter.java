@@ -22,7 +22,8 @@ import com.example.psymood.R;
 import java.util.List;
 
 public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.MyViewHolder> {
-    private static final String KEY_COUNTER_STATE = "COUNTER_STATE";
+
+    private static final String KEY_COUNTER = "COUNTER";
     private Context context;
     private OnItemClickListener mlistener;
     private List<ItemData> itemDataList;
@@ -96,12 +97,13 @@ public class MyItemListAdapter extends RecyclerView.Adapter<MyItemListAdapter.My
     }
 
     private void updateNumState(int i) {
-        int contador = ApplicationPreferences.loadNumState(KEY_COUNTER_STATE);
+
+        int contador = ApplicationPreferences.loadNumState(KEY_COUNTER);
         contador =  contador + i;
         if(contador < 0){
             contador = 0;
         }
-        ApplicationPreferences.saveNumState(KEY_COUNTER_STATE,contador);
+        ApplicationPreferences.saveNumState(KEY_COUNTER,contador);
     }
 
 

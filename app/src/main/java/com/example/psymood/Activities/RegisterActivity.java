@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.psymood.Helpers.SnackbarHelper;
+import com.example.psymood.Models.InfoUser;
+import com.example.psymood.Preferences.ApplicationPreferences;
 import com.example.psymood.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,6 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
     private ImageView regUserPhoto;
     static int PERMISSIONCODE = 1;
     static final int PICK_IMAGE = 100;
+    private static final String KEY_ID_USER = "ID_USER";
 
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -66,6 +69,11 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        //firebase authentication
+        mAuth = FirebaseAuth.getInstance();
+        //SharedPreferences instance
+        ApplicationPreferences.init(getApplicationContext());
+
         //Form to register user
         userName = findViewById(R.id.regName);
         userMail = findViewById(R.id.regMail);
@@ -74,8 +82,7 @@ public class RegisterActivity extends AppCompatActivity {
         buttonRegister = findViewById(R.id.regButton);
         linkLogIn = findViewById(R.id.linkLogIn);
 
-        //firebase authentication
-        mAuth = FirebaseAuth.getInstance();
+
         //Load image user
         regUserPhoto = findViewById(R.id.regUserPhoto);
         regUserPhoto.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +130,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     //Method to create a user account with email and password
-    private void createUserAccount(String email, final String name, String password) {
+    private void createUserAccount(final String email, final String name, final String password) {
 
         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
