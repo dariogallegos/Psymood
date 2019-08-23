@@ -14,11 +14,14 @@ import android.view.View;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
+
+import com.google.android.material.internal.NavigationMenuView;
 import com.google.android.material.navigation.NavigationView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,8 +41,9 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
     private DrawerLayout drawer;
     private AppBarLayout appBarLayout;
     private BottomNavigationView bottomNav;
+    private ImageView linkToSettings;
 
-    FirebaseUser currentUser;
+    private FirebaseUser currentUser;
 
 
     @Override
@@ -79,6 +83,17 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        disableNavigationViewScrollbars(navigationView);
+        View header =  navigationView.getHeaderView(0);
+
+        linkToSettings = header.findViewById(R.id.linkToSettings);
+        linkToSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =  new Intent(getApplicationContext(),SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         ActionBarDrawerToggle mDrawertoggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -86,8 +101,9 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         drawer.addDrawerListener(mDrawertoggle);
         mDrawertoggle.syncState();
 
-        // initViewNavigation marca en el menu la primera opcion , de forma que cuando lo abres ya esta un item seleccionado.
 
+
+        // initViewNavigation marca en el menu la primera opcion , de forma que cuando lo abres ya esta un item seleccionado.
         initViewNavigation(savedInstanceState,navigationView);
         updateNavHeader();
 
@@ -95,6 +111,15 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         //uploadInfoUserDataBase();
         FirebaseInteractor.createInfoUserInDatabase();
 
+    }
+
+    private void disableNavigationViewScrollbars(NavigationView navigationView) {
+        if (navigationView != null) {
+            NavigationMenuView navigationMenuView = (NavigationMenuView) navigationView.getChildAt(0);
+            if (navigationMenuView != null) {
+                navigationMenuView.setVerticalScrollBarEnabled(false);
+            }
+        }
     }
 
 
@@ -106,21 +131,20 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
         }
     }
 
-    //Actulizo la informacion del usuario en NavHeader
+    //Update the info user in  NavHeader
     private void updateNavHeader() {
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         TextView navUserName = headerView.findViewById(R.id.nav_user_name);
-        TextView navUserMail = headerView.findViewById(R.id.nav_user_mail);
         ImageView navUserPhoto = headerView.findViewById(R.id.nav_user_photo);
 
-        navUserMail.setText(currentUser.getEmail());
         navUserName.setText(currentUser.getDisplayName());
 
         //Usremos Glide para cargar la photo.
 
         //Glide.with(this).load(currentUser.getPhotoUrl()).into(navUserPhoto);
-        Glide.with(this).load(currentUser.getPhotoUrl()).placeholder(R.drawable.default_photo_profile).into(navUserPhoto);
+        Glide.with(this).load(currentUser.getPhotoUrl()).placeholder(R.drawable.ic_astronaut_profile_grey).into(navUserPhoto);
     }
 
     //flechita de android para atras para cerrar el menu lateral
