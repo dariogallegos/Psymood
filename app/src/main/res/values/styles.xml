@@ -42,7 +42,8 @@
         <item name="colorControlHighlight">@color/GreyBackground</item>
     </style>
 
-
-
-
+    <!--Style toolbar style-->
+    <style name="ToolbarStyle" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/GreyTitle</item>
+    </style>
 </resources>

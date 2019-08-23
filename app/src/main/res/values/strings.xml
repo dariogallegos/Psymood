@@ -22,8 +22,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="sing_out">Salir</string>
-    <string name="home">Home</string>
+    <string name="sing_out">Cerrar sesión</string>
+    <string name="home">Inicio</string>
     <string name="psymood">Psymood</string>
     <string name="audio">Audio</string>
     <string name="camera">Cámara</string>
@@ -32,9 +32,11 @@
     <string name="error_invalid_password">contraseña no válida</string>
     <string name="error_invalid_email">correo  no válido</string>
     <string name="error_email_alredy_exist">email ya existente</string>
-    <string name="task">tareas</string>
+    <string name="task">Tareas</string>
     <string name="cero_task">0</string>
     <string name="two_points">:</string>
     <string name="about_us">Acerca de</string>
     <string name="politics">Política de Privacidad</string>
+    <string name="edit_perfil">Editar perfil</string>
+    <string name="settings_to_account">Ajustes de mi cuenta</string>
 </resources>
