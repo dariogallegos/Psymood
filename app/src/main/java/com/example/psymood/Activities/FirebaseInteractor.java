@@ -61,9 +61,9 @@ public class FirebaseInteractor {
     public static void saveAudioInDatabase(String urlAudio){
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
-        String currentDateandTime = sdf.format(new Date());
+        String currentDateAndTime = sdf.format(new Date());
 
-        DatabaseReference myAudioRef = myRef.child(myCurrentUser.getUid()).child("audiosUser").child(currentDateandTime);
+        DatabaseReference myAudioRef = myRef.child(myCurrentUser.getUid()).child("audiosUser").child(currentDateAndTime);
         myAudioRef.setValue(urlAudio);
     }
 
@@ -74,4 +74,11 @@ public class FirebaseInteractor {
 
     }
 
+    public static void savePhotoInDatabase(String urlPhoto) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
+        String currentDateAndTime = sdf.format(new Date());
+        DatabaseReference myPhotoRef = myRef.child(myCurrentUser.getUid()).child("dailyPhotosUser").child(currentDateAndTime);
+        myPhotoRef.setValue(urlPhoto);
+    }
 }

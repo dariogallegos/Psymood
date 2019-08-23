@@ -14,7 +14,6 @@ import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,18 +21,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.psymood.Helpers.SnackbarHelper;
-import com.example.psymood.Models.InfoUser;
 import com.example.psymood.Preferences.ApplicationPreferences;
 import com.example.psymood.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
@@ -79,7 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
         userMail = findViewById(R.id.regMail);
         userPassword = findViewById(R.id.regPassword);
         userConfirm = findViewById(R.id.regConfirmPass);
-        buttonRegister = findViewById(R.id.regButton);
+        buttonRegister = findViewById(R.id.buttonRegister);
         linkLogIn = findViewById(R.id.linkLogIn);
 
 
@@ -88,7 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
         regUserPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >=22){
+                if (Build.VERSION.SDK_INT >=23){
                     checkAndRequestForPermission();
                 }
                 else{ openGallery(); }
@@ -238,9 +233,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
     private void openGallery() {
         //TODO: open gallery intent and wait for user pick an image
-       /* Intent intentGallery = new Intent(Intent.ACTION_GET_CONTENT);
-        intentGallery.setType("+image/*");
-        startActivityForResult(intentGallery, REQUESTCODE);*/
 
        Intent intentGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
        startActivityForResult(intentGallery,PICK_IMAGE);
@@ -250,8 +242,6 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE && data != null){
-            //  El usuario a seleccionado una imagen correctamente
-            //  Lo que ahora necesitamos el guardar la referencia en un Uri variable
             pickedImageUri = data.getData();
             regUserPhoto.setImageURI(pickedImageUri);
         }

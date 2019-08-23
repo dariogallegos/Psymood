@@ -70,7 +70,7 @@
             android:textSize="15sp" />
 
         <EditText
-            android:id="@+id/settingsName"
+            android:id="@+id/regName"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginLeft="3dp"
@@ -147,7 +147,7 @@
             android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/settings_save"
+            android:id="@+id/buttonRegister"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_gravity="center"

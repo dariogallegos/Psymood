@@ -35,9 +35,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.psymood.Activities.FirebaseInteractor;
 import com.example.psymood.R;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,6 +78,11 @@ public class CameraFragment extends Fragment {
     private static final int REQUEST_TAKE_PHOTO = 1;
     private ImageView imgPhoto;
     private ImageButton btn_camera;
+    private TextView textPicture;
+    private Button savePhoto;
+
+    private StorageReference mStorage;
+    private FirebaseUser currentUser;
 
     private String mCurrentPhotoPath;
     private int heightPhoto = 480;
@@ -111,26 +124,76 @@ public class CameraFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
+        //init firebase storage reference
+        mStorage = FirebaseStorage.getInstance().getReference();
+        //Firebase user authentication
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
         imgPhoto =  view.findViewById(R.id.imgFoto);
         btn_camera = view.findViewById(R.id.btn_camera);
+        textPicture = view.findViewById(R.id.textPicture);
+        savePhoto = view.findViewById(R.id.savePhoto);
+
+        openCameraToTakePhotos();
 
         btn_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { // Es una versión mayor que la 6.0
-                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
-                    }
-                    else {
-                        dispatchTakePictureIntent();
-                    }
+                openCameraToTakePhotos();
+            }
+        });
+        savePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(imgPhoto != null){
+                    uploadPhoto();
                 }
             }
         });
 
 
         return view;
+    }
+
+
+    private void uploadPhoto() {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
+        String currentDateandTime = sdf.format(new Date());
+
+        final StorageReference filepath = mStorage.child("daily_user_photos").child(currentUser.getUid()).child(currentDateandTime);
+
+        File file =  new File(mCurrentPhotoPath);
+        Log.e("Camera fragment",mCurrentPhotoPath);
+        Uri uri = Uri.fromFile(file);
+        filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        FirebaseInteractor.savePhotoInDatabase(uri.toString());
+                        Toast.makeText(getContext(), "Upload successfull", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        });
+
+
+    }
+
+    private void openCameraToTakePhotos() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { // Es una versión mayor que la 6.0
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+            }
+            else {
+                dispatchTakePictureIntent();
+            }
+        }
     }
 
 
@@ -224,9 +287,6 @@ public class CameraFragment extends Fragment {
         }
 
 
-       /* height = height - topcutoff;
-        height = height - bottomcutoff;
-        croppedBitmap = Bitmap.createBitmap(croppedBitmap, 0, topcutoff, width, height);*/
         imgPhoto.setImageBitmap(rotatedBitmap);
     }
 

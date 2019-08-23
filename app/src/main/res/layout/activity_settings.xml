@@ -210,7 +210,7 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/settings_save"
+                    android:id="@+id/settingsSave"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
@@ -220,7 +220,7 @@
                     android:layout_marginRight="3dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/reg_btn_green_style"
-                    android:fontFamily="@font/muli_bold"
+                    android:fontFamily="@font/heebo_bold"
                     android:text="Guardar"
                     android:textAllCaps="false"
                     android:textColor="@color/White"
@@ -237,7 +237,7 @@
                     android:layout_marginRight="3dp"
                     android:layout_marginBottom="30dp"
                     android:background="@drawable/reg_btn_white_style"
-                    android:fontFamily="@font/muli_bold"
+                    android:fontFamily="@font/heebo_bold"
                     android:text="Cerrar sesión"
                     android:textAllCaps="false"
                     android:textColor="@color/GreenTask"

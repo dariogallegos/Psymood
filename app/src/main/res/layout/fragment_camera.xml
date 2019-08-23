@@ -19,6 +19,7 @@
             android:weightSum="4">
 
             <RelativeLayout
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -27,32 +28,68 @@
                     android:layout_width="match_parent"
                     android:layout_height="480dp"
                     android:layout_gravity="center"
-                    android:background="@color/GreyBackground"></ImageView>
+                    android:background="@color/GreyBackground" />
 
                 <ImageButton
                     android:id="@+id/btn_camera"
-                    android:layout_width="53dp"
-                    android:layout_height="53dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_alignBottom="@+id/imgFoto"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/rounded_border"
-                    android:src="@drawable/ic_edit" />
+                    android:src="@drawable/ic_edit_big" />
 
 
             </RelativeLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
-                android:gravity="end"
-                android:orientation="horizontal">
+                android:layout_height="100dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textPicture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/heebo_bold"
+                    android:text="Aún te falta el selfie"
+                    android:textColor="@color/GreyTitle"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/savePhoto"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.142" />
 
 
-            </LinearLayout>
+                <Button
+                    android:id="@+id/savePhoto"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="80dp"
+                    android:layout_height="45dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/reg_btn_grey_light_style"
+                    android:fontFamily="@font/heebo_bold"
+                    android:text="Guardar"
+                    android:textAllCaps="false"
+                    android:textColor="@color/White"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.205" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
 

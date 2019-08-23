@@ -158,41 +158,6 @@ public class StateFragment extends Fragment {
         }
     }
 
-    /*private void defaultGroupList() {
-
-        List<ItemData> listItemData = new ArrayList<>();
-        listItemData.add(new ItemData("Triste", R.drawable.ic_mood_unhappy));
-        listItemData.add(new ItemData("Insatisfecho", R.drawable.ic_mood_very_dissatisfied));
-        listItemData.add(new ItemData("Normal", R.drawable.ic_mood_neutro));
-        listItemData.add(new ItemData("Satisfecho", R.drawable.ic_mood_very_satisfied));
-        listItemData.add(new ItemData("Feliz", R.drawable.ic_mood_happy));
-
-        List<ItemData> listItemData2 = new ArrayList<>();
-        listItemData2.add(new ItemData("Exhausta", R.drawable.ic_energy_very_low));
-        listItemData2.add(new ItemData("Baja", R.drawable.ic_energy_low));
-        listItemData2.add(new ItemData("Normal", R.drawable.ic_energy_normal));
-        listItemData2.add(new ItemData("Alta", R.drawable.ic_energy_high));
-        listItemData2.add(new ItemData("Energizada", R.drawable.ic_energy_very_high));
-
-        List<ItemData> listItemData3 = new ArrayList<>();
-        listItemData3.add(new ItemData("Nada", R.drawable.ic_diana_vacia));
-        listItemData3.add(new ItemData("Poco", R.drawable.ic_diana_cero));
-        listItemData3.add(new ItemData("Suficiente", R.drawable.ic_diana_suficiente));
-        listItemData3.add(new ItemData("Bastante", R.drawable.ic_diana_bastante));
-        listItemData3.add(new ItemData("Mucha", R.drawable.ic_diana_mucho));
-
-        List<ItemData> listItemData4 = new ArrayList<>();
-        listItemData4.add(new ItemData("Triste4", R.drawable.ic_mood_unhappy));
-        listItemData4.add(new ItemData("Insatisfecho4", R.drawable.ic_mood_very_dissatisfied));
-        listItemData4.add(new ItemData("Normal4", R.drawable.ic_mood_neutro));
-        listItemData4.add(new ItemData("Satisfecho4", R.drawable.ic_mood_very_satisfied));
-        listItemData4.add(new ItemData("Feliz4", R.drawable.ic_mood_happy));
-
-        itemGroupList.add(new ItemGroup("emociones", listItemData));
-        itemGroupList.add(new ItemGroup("energía", listItemData2));
-        itemGroupList.add(new ItemGroup("concentración", listItemData3));
-        itemGroupList.add(new ItemGroup("actividad", listItemData4));
-    }*/
 
     /**
      * This interface must be implemented by activities that contain this
