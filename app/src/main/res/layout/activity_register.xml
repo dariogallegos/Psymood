@@ -49,13 +49,13 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/regUserPhoto"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_gravity="center"
             android:layout_marginBottom="5dp"
             android:contentDescription="@string/todo"
-            android:src="@drawable/ic_astronautbig"
-            app:civ_border_color="@color/VioletTask"
+            android:src="@drawable/ic_astronaut_profile_grey"
+            app:civ_border_color="@color/GreyBackground"
             app:civ_border_width="2dp" />
 
 
@@ -70,7 +70,7 @@
             android:textSize="15sp" />
 
         <EditText
-            android:id="@+id/regName"
+            android:id="@+id/settingsName"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginLeft="3dp"
@@ -147,7 +147,7 @@
             android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/regButton"
+            android:id="@+id/settings_save"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_gravity="center"
