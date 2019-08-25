@@ -39,4 +39,7 @@
     <string name="politics">Política de Privacidad</string>
     <string name="edit_perfil">Editar perfil</string>
     <string name="settings_to_account">Ajustes de mi cuenta</string>
+    <string name="selfie_necesary">Aún te falta el selfie</string>
+    <string name="selfie_task_completed">Objetivo diario conseguido</string>
+    <string name="selfie_alredy_exist">Ya has subido un selfie</string>
 </resources>

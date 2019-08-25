@@ -23,6 +23,7 @@ import com.example.psymood.Helpers.CountUpTimer;
 import com.example.psymood.Preferences.ApplicationPreferences;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -412,7 +413,6 @@ public class AudioFragment extends Fragment {
                     @Override
                     public void onSuccess(Uri uri) {
                         FirebaseInteractor.saveAudioInDatabase(uri.toString());
-                        //Toast.makeText(getContext(), "Upload successfull", Toast.LENGTH_SHORT).show();
                         updateCounterAudio();
                     }
                 });
@@ -435,7 +435,7 @@ public class AudioFragment extends Fragment {
 
         int numAudios = ApplicationPreferences.loadNumState(KEY_NUM_AUDIO);
         if (numAudios < 1) {
-            int cont = ApplicationPreferences.loadNumState(KEY_COUNTER) + 2;
+            int cont = ApplicationPreferences.loadNumState(KEY_COUNTER) + 3;
             ApplicationPreferences.saveNumState(KEY_NUM_AUDIO, 1);
             ApplicationPreferences.saveNumState(KEY_COUNTER, cont);
         }
