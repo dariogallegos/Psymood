@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -62,14 +63,14 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="7dp">
+                android:paddingTop="7dp"
+                android:paddingRight="20dp">
 
                 <TextView
-                    android:layout_marginBottom="10dp"
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:fontFamily="@font/muli_regular"
                     android:text="Tú progreso actual"
                     android:textColor="@color/GreyTitle"
@@ -78,26 +79,27 @@
 
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/percentageTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_marginTop="5dp"
-                        android:textSize="30sp"
                         android:fontFamily="@font/muli_bold"
                         android:textColor="@color/GreyTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:textSize="30sp" />
+
                     <TextView
-                        android:layout_marginTop="5dp"
-                        android:text="%"
-                        android:textSize="30sp"
-                        android:fontFamily="@font/muli_bold"
-                        android:textColor="@color/GreyTitle"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/muli_bold"
+                        android:text="%"
+                        android:textColor="@color/GreyTitle"
+                        android:textSize="30sp" />
 
                 </LinearLayout>
 
@@ -108,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:progress="10"
-                    android:progressDrawable="@drawable/sb_progress_drawable"/>
+                    android:progressDrawable="@drawable/sb_progress_drawable" />
 
             </LinearLayout>
 
@@ -117,8 +119,8 @@
                 android:layout_height="60dp"
                 android:orientation="vertical"
                 android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="25dp">
+                android:paddingTop="25dp"
+                android:paddingRight="20dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -158,10 +160,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_height="300dp"
-                android:orientation="vertical"
-                android:layout_marginBottom="20dp">
+                android:layout_height="200dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewTask"
@@ -169,14 +171,134 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:orientation="horizontal"
-                    android:visibility="visible"/>
+                    android:visibility="visible" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:background="@color/GreyTitle"
-                android:layout_height="300dp">
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="@font/muli_regular"
+                    android:text="El progreso de esta semana"
+                    android:textColor="@color/GreyTitle"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="@color/White"
+                android:orientation="vertical"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="10dp">
+
+                <com.majorik.sparklinelibrary.SparkLineLayout
+                    android:id="@+id/spark_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@drawable/reg_btn_grey_light_style"
+                    app:s_line_bezier="0.5"
+                    app:s_line_color="@color/PinkTask"
+                    app:s_line_thickness="4dp"
+                    app:s_split_left_color="@color/PinkTask"
+                    app:s_split_right_color="@color/GreyBackground"
+                    app:s_marker_background_color="@color/White"
+                    app:s_marker_border_color="@color/PinkTask"
+                    app:s_marker_border_size="1dp"
+                    app:s_marker_circle_style="true"
+                    app:s_marker_width="6dp"
+                    app:s_split_line="true" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="7">
+
+                    <TextView
+                        android:id="@+id/day1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Lun"
+                        android:textColor="@color/GreySubTitle"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/day2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Mar"
+                        android:textColor="@color/GreySubTitle"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/day3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Mier"
+                        android:textColor="@color/GreySubTitle"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/day4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Jue"
+                        android:textColor="@color/GreySubTitle"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/day5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Vie"
+                        android:textColor="@color/GreySubTitle"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/day6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Sab"
+                        android:textColor="@color/GreySubTitle"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/day7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Dom"
+                        android:textColor="@color/GreySubTitle"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
 

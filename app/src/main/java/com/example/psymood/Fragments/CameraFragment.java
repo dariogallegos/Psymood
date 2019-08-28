@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.psymood.Activities.FirebaseInteractor;
+import com.example.psymood.Preferences.ApplicationPreferences;
 import com.example.psymood.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -67,6 +68,10 @@ public class CameraFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+
+    private static final String KEY_COUNTER = "COUNTER";
+    private static final String KEY_NUM_PHOTO = "NUM_PHOTO";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -129,32 +134,46 @@ public class CameraFragment extends Fragment {
         //Firebase user authentication
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        imgPhoto =  view.findViewById(R.id.imgFoto);
+        imgPhoto = view.findViewById(R.id.imgFoto);
         btn_camera = view.findViewById(R.id.btn_camera);
         textPicture = view.findViewById(R.id.textPicture);
         savePhoto = view.findViewById(R.id.savePhoto);
 
         openCameraToTakePhotos();
-
         btn_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openCameraToTakePhotos();
             }
         });
-        savePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(imgPhoto != null){
-                    uploadPhoto();
-                }
-            }
-        });
 
+        controlToShowMessageAndUploadPhoto();
 
         return view;
     }
 
+    private void controlToShowMessageAndUploadPhoto() {
+
+        //photo proof is taken
+        final int counterOfPhoto = ApplicationPreferences.loadNumState(KEY_NUM_PHOTO);
+
+        if (counterOfPhoto < 1) {
+            textPicture.setText(R.string.selfie_necesary);
+        } else {
+            textPicture.setText(R.string.selfie_alredy_exist);
+        }
+
+        savePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imgPhoto != null && counterOfPhoto < 1) {
+                    //Comprobamos si ya se ha subido una foto o no.
+                    uploadPhoto();
+                    textPicture.setText(R.string.selfie_task_completed);
+                }
+            }
+        });
+    }
 
     private void uploadPhoto() {
 
@@ -163,8 +182,8 @@ public class CameraFragment extends Fragment {
 
         final StorageReference filepath = mStorage.child("daily_user_photos").child(currentUser.getUid()).child(currentDateandTime);
 
-        File file =  new File(mCurrentPhotoPath);
-        Log.e("Camera fragment",mCurrentPhotoPath);
+        File file = new File(mCurrentPhotoPath);
+        Log.e("Camera fragment", mCurrentPhotoPath);
         Uri uri = Uri.fromFile(file);
         filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -174,14 +193,22 @@ public class CameraFragment extends Fragment {
                     @Override
                     public void onSuccess(Uri uri) {
                         FirebaseInteractor.savePhotoInDatabase(uri.toString());
-                        Toast.makeText(getContext(), "Upload successfull", Toast.LENGTH_SHORT).show();
+                        updateCounterPhoto();
                     }
                 });
-
             }
         });
 
+    }
 
+    private void updateCounterPhoto() {
+
+        int numAudios = ApplicationPreferences.loadNumState(KEY_NUM_PHOTO);
+        if (numAudios < 1) {
+            int cont = ApplicationPreferences.loadNumState(KEY_COUNTER) + 3;
+            ApplicationPreferences.saveNumState(KEY_NUM_PHOTO, 1);
+            ApplicationPreferences.saveNumState(KEY_COUNTER, cont);
+        }
     }
 
     private void openCameraToTakePhotos() {
@@ -189,13 +216,11 @@ public class CameraFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { // Es una versión mayor que la 6.0
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
-            }
-            else {
+            } else {
                 dispatchTakePictureIntent();
             }
         }
     }
-
 
     private void dispatchTakePictureIntent() {
 
@@ -208,7 +233,7 @@ public class CameraFragment extends Fragment {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
-                Log.e("Foto Fragment","error");
+                Log.e("Foto Fragment", "error");
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -221,7 +246,6 @@ public class CameraFragment extends Fragment {
     }
 
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -230,8 +254,7 @@ public class CameraFragment extends Fragment {
                 Toast.makeText(getContext(), "Permisos de la cámara concedidos", Toast.LENGTH_LONG).show();
 
                 dispatchTakePictureIntent();
-            }
-            else {
+            } else {
                 Toast.makeText(getContext(), "Permisos de la cámara denegados", Toast.LENGTH_LONG).show();
             }
         }
@@ -248,7 +271,7 @@ public class CameraFragment extends Fragment {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), Uri.fromFile(file));
                         if (bitmap != null) {
 
-                            rotationImageToShowInFragment(mCurrentPhotoPath,bitmap);
+                            rotationImageToShowInFragment(mCurrentPhotoPath, bitmap);
                         }
                     }
                     break;
@@ -267,7 +290,7 @@ public class CameraFragment extends Fragment {
                 ExifInterface.ORIENTATION_UNDEFINED);
 
         Bitmap rotatedBitmap = null;
-        switch(orientation) {
+        switch (orientation) {
 
             case ExifInterface.ORIENTATION_ROTATE_90:
                 rotatedBitmap = rotateImage(bitmap, 90);
@@ -342,7 +365,6 @@ public class CameraFragment extends Fragment {
         canvas.drawBitmap(bitmap, rect, rect, paint);
         return output;
     }
-
 
 
     @Override

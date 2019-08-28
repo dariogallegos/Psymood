@@ -24,6 +24,8 @@ android {
         //Glide repositories
         mavenCentral()
         google()
+        maven { url 'https://jitpack.io' }
+
     }
 }
 
@@ -62,4 +64,7 @@ dependencies {
 
     //Lottie library to animation
     implementation 'com.airbnb.android:lottie:3.0.7'
+
+    //Sparkline
+    implementation 'com.github.majorkik:SparkLineLayout:1.0.1'
 }

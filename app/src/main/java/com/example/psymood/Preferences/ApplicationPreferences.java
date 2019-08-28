@@ -5,7 +5,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.arch.core.internal.FastSafeIterableMap;
+
 import com.example.psymood.Models.InfoUser;
+import com.example.psymood.Models.ItemDays;
 import com.example.psymood.Models.ItemGroup;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -74,5 +77,21 @@ public class ApplicationPreferences {
 
     public static String loadDate(String KEYNAME) {
         return mSharedPreferences.getString(KEYNAME, "0000-00-00");
+    }
+
+    public static void saveValuesToChart(String KEYCHART, ArrayList<String> arrayToChart) {
+        SharedPreferences.Editor prefersEditor = mSharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(arrayToChart);
+        prefersEditor.putString(KEYCHART, json);
+        prefersEditor.apply();
+    }
+
+    public static ArrayList<String> loadValuesToChart(String KEYCHART) {
+        Gson gson = new Gson();
+        String json = mSharedPreferences.getString(KEYCHART, "");
+        ArrayList<String> obj = gson.fromJson(json, ArrayList.class);
+
+        return obj;
     }
 }

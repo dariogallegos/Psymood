@@ -105,4 +105,7 @@
     \n\n
     Este documento se actualizó por última vez el 26 de agosto de 2019.
     </string>
+    <string name="selfie_necesary">Aún te falta el selfie</string>
+    <string name="selfie_task_completed">Objetivo diario conseguido</string>
+    <string name="selfie_alredy_exist">Ya has subido un selfie</string>
 </resources>
