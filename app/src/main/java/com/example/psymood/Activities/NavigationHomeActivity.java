@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.psymood.Fragments.CameraFragment;
-import com.example.psymood.Preferences.ApplicationPreferences;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.View;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -21,7 +19,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +29,6 @@ import com.example.psymood.Fragments.StateFragment;
 import com.example.psymood.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 
 
 public class NavigationHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, StateFragment.OnFragmentInteractionListener,HomeFragment.OnFragmentInteractionListener{
@@ -214,6 +210,18 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
                 startActivity(intent);
                 finish();
                 break;
+            case R.id.nav_terms:
+                Intent intentTermsAndConditions =  new Intent(getApplicationContext(),TermsAndConditions.class);
+                startActivity(intentTermsAndConditions);
+                break;
+            case R.id.nav_politics:
+                Intent intentPolitics =  new Intent(getApplicationContext(),PrivacyPolicyActivity.class);
+                startActivity(intentPolitics);
+                break;
+            case R.id.nav_version:
+                Intent intentVersion =  new Intent(getApplicationContext(),VersionActivity.class);
+                startActivity(intentVersion);
+                break;
             default:
                 Toast.makeText(this,"Other opcion",Toast.LENGTH_SHORT).show();
         }
@@ -232,6 +240,7 @@ public class NavigationHomeActivity extends AppCompatActivity implements Navigat
 
     private Fragment selectFragmentById(int itemId) {
         Fragment selectFragment = null;
+
         switch (itemId) {
             case R.id.nav_home:
                 selectFragment = new HomeFragment();

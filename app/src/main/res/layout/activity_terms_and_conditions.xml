@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.TermsAndConditions">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="12sp"
+            android:layout_marginTop="4sp">
+
+            <TextView
+                android:id="@+id/titlePrivacyPolicy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:fontFamily="@font/muli_bold"
+                android:textAlignment="center"
+                android:text="Términos y condiciones de servicio"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textPrivacyPolicy"
+                android:layout_below = "@+id/titlePrivacyPolicy"
+                android:textSize="16sp"
+                android:fontFamily="@font/muli_bold"
+                android:lineSpacingExtra="5sp"
+                android:text="@string/terms_conditions"/>
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
