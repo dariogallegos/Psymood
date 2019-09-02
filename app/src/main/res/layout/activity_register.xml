@@ -9,7 +9,6 @@
     android:weightSum="5"
     tools:context=".Activities.RegisterActivity">
 
-
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="match_parent"

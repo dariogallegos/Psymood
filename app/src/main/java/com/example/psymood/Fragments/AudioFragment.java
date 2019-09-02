@@ -412,8 +412,9 @@ public class AudioFragment extends Fragment {
                 filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        FirebaseInteractor.saveAudioInDatabase(uri.toString());
                         updateCounterAudio();
+                        FirebaseInteractor.saveAudioInDatabase(uri.toString());
+                        mListener.showMessageFragmentInHome("El audio se ha subido correctamente");
                     }
                 });
 
@@ -500,6 +501,6 @@ public class AudioFragment extends Fragment {
     //Implements function fragment
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(String urlAudio);
+        void showMessageFragmentInHome(String message);
     }
 }

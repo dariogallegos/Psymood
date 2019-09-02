@@ -422,10 +422,11 @@ public class HomeFragment extends Fragment {
 
     private void defaultTaskList() {
         listItemTask = new ArrayList<>();
-        listItemTask.add(new ItemTask("Prueba a hacerte un selfie", "1", R.color.PurpleTask, R.drawable.ic_task_camera, R.id.nav_camera));
-        listItemTask.add(new ItemTask("¿Grabamos un vídeo?", "1", R.color.PinkTask, R.drawable.ic_task_video, R.id.nav_camera));
         listItemTask.add(new ItemTask("Hey, ¿como te encuentras?", "4", R.color.GreenTask, R.drawable.ic_task_face, R.id.nav_add));
-        listItemTask.add(new ItemTask("¿Y si me dices algo?", "1", R.color.YellowTask, R.drawable.ic_task_mic, R.id.nav_audio));
+        listItemTask.add(new ItemTask("Prueba a hacerte un selfie", "1", R.color.PinkTask, R.drawable.ic_task_camera, R.id.nav_camera));
+        listItemTask.add(new ItemTask("¿Y si me dices algo?", "1", R.color.PurpleTask, R.drawable.ic_task_mic, R.id.nav_audio));
+        listItemTask.add(new ItemTask("Proximamente se podra grabar", "0", R.color.YellowTask, R.drawable.ic_task_video, -1));
+
     }
 
 
