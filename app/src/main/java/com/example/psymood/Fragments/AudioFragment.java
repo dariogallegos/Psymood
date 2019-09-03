@@ -65,10 +65,10 @@ import java.util.concurrent.TimeUnit;
 public class AudioFragment extends Fragment {
 
     private String[] sentencesUser = new String[]{
-            "Todos los que crecimos fuimos alguna vez niños, pero pocos lo recuerdan",
+            "Todos los que crecimos fuimos vez niños, pero pocos lo recuerdan",
             "Facilita la identificacion de especies desconocidas",
             "Cuántos más palos me da el mundo... ¡más limonadas que me tomo!",
-            "Todo depende de lo que se espero de ellos y de lo que se este dispuesto a darles.",
+            "Todo depende de lo que este dispuesto a dar.",
             "No es mío, ya me gustaría a mi que lo fuera."
     };
 
@@ -183,23 +183,15 @@ public class AudioFragment extends Fragment {
     }
 
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-       /* if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-        */
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        /*if (context instanceof OnFragmentInteractionListener) {
+        if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
-        }*/
+        }
     }
 
     @Override

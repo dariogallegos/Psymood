@@ -39,7 +39,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class NavigationHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, StateFragment.OnFragmentInteractionListener, HomeFragment.OnFragmentInteractionListener, CameraFragment.OnFragmentInteractionListener {
+public class NavigationHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, StateFragment.OnFragmentInteractionListener, HomeFragment.OnFragmentInteractionListener, CameraFragment.OnFragmentInteractionListener,AudioFragment.OnFragmentInteractionListener {
 
 
     private DrawerLayout drawer;
