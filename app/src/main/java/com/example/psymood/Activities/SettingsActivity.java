@@ -130,7 +130,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void updateInfoUserIntoFirebase(final String nameUser, Uri pickedImageUri , final FirebaseUser currentUser) {
 
-        StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("users_photos");
+        StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("profile_user_photos");
 
         if(pickedImageUri == null){
             pickedImageUri = getUriToDrawable(getApplicationContext(),R.drawable.default_photo_profile);

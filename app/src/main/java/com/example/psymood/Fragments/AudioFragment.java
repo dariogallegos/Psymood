@@ -46,6 +46,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -65,7 +66,7 @@ import java.util.concurrent.TimeUnit;
 public class AudioFragment extends Fragment {
 
     private String[] sentencesUser = new String[]{
-            "Todos los que crecimos fuimos vez niños, pero pocos lo recuerdan",
+            "Todos los que crecimos fuimos niños, pero pocos lo recuerdan",
             "Facilita la identificacion de especies desconocidas",
             "Cuántos más palos me da el mundo... ¡más limonadas que me tomo!",
             "Todo depende de lo que este dispuesto a dar.",
@@ -127,8 +128,11 @@ public class AudioFragment extends Fragment {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //Nombre del archivo
-        mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        mFileName += "/recorded_audio.3gp";
+        try {
+            mFileName = createAudioFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         releaseAudioRecorder();
 
@@ -383,21 +387,26 @@ public class AudioFragment extends Fragment {
         mRecorder.stop();
         mRecorder.release();
         mRecorder = null;
-
-        //TODO ANTES DE ENVIAR EL AUDIO A FIRENASE DEBE APARECER UN DIALOG DE CONFIRMACION
         showDialogConfirm();
     }
 
     private void uploadAudio() {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
-        String currentDateandTime = sdf.format(new Date());
+        String audioStamp = new SimpleDateFormat("yyyyMMdd HH:mm:ss").format(new Date());
+        audioStamp+=".3gp";
+
+        StorageMetadata metadata = new StorageMetadata.Builder()
+                .setContentType("audio/3gp")
+                .build();
+
+        File audio =  new File(mFileName);
+
+        Uri uri = Uri.fromFile(audio);
+
+        final StorageReference filepath = mStorage.child("daily_user_audios").child(currentUser.getUid()).child(audioStamp);
 
 
-        //TODO AUDIO: ID_AUDIO CON EL ID DE USER
-        final StorageReference filepath = mStorage.child("users_audios").child(currentUser.getUid()).child(currentDateandTime);
-        Uri uri = Uri.fromFile(new File(mFileName));
-        filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        filepath.putFile(uri,metadata).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
@@ -414,6 +423,13 @@ public class AudioFragment extends Fragment {
         });
 
 
+    }
+
+    private String createAudioFile() throws IOException {
+
+        String file =  getContext().getExternalFilesDir(Environment.DIRECTORY_MUSIC).getPath();
+        file += "/recorded_audio.3gp";
+        return file;
     }
 
     private void onRecord(boolean start) {
