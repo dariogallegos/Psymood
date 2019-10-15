@@ -90,7 +90,6 @@ public class CameraFragment extends Fragment {
     private FirebaseUser currentUser;
 
     private String mCurrentPhotoPath;
-    private int heightPhoto = 480;
 
     public CameraFragment() {
         // Required empty public constructor
@@ -192,8 +191,9 @@ public class CameraFragment extends Fragment {
                 filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        FirebaseInteractor.savePhotoInDatabase(uri.toString());
                         updateCounterPhoto();
+                        FirebaseInteractor.savePhotoInDatabase(uri.toString());
+                        mListener.showMessageFragmentInHome("La imagen se ha subido correctamente");
                     }
                 });
             }
@@ -270,7 +270,6 @@ public class CameraFragment extends Fragment {
                         File file = new File(mCurrentPhotoPath);
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), Uri.fromFile(file));
                         if (bitmap != null) {
-
                             rotationImageToShowInFragment(mCurrentPhotoPath, bitmap);
                         }
                     }
@@ -305,6 +304,8 @@ public class CameraFragment extends Fragment {
                 break;
 
             case ExifInterface.ORIENTATION_NORMAL:
+                break;
+
             default:
                 rotatedBitmap = bitmap;
         }
@@ -313,7 +314,7 @@ public class CameraFragment extends Fragment {
         imgPhoto.setImageBitmap(rotatedBitmap);
     }
 
-    public static Bitmap rotateImage(Bitmap source, float angle) {
+    private static Bitmap rotateImage(Bitmap source, float angle) {
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
@@ -337,45 +338,15 @@ public class CameraFragment extends Fragment {
         return image;
     }
 
-    private static Bitmap createRoundedRectBitmap(@NonNull Bitmap bitmap,
-                                                  float topLeftCorner, float topRightCorner,
-                                                  float bottomRightCorner, float bottomLeftCorner) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
-                Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-
-        final int color = Color.WHITE;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-        Path path = new Path();
-        float[] radii = new float[]{
-                topLeftCorner, bottomLeftCorner,
-                topRightCorner, topRightCorner,
-                bottomRightCorner, bottomRightCorner,
-                bottomLeftCorner, bottomLeftCorner
-        };
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        path.addRoundRect(rectF, radii, Path.Direction.CW);
-        canvas.drawPath(path, paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-        return output;
-    }
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        /*if (context instanceof OnFragmentInteractionListener) {
+        if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
-        }*/
+        }
     }
 
     @Override
@@ -395,7 +366,7 @@ public class CameraFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+
+        void showMessageFragmentInHome(String message);
     }
 }

@@ -163,7 +163,7 @@ public class RegisterActivity extends AppCompatActivity {
     //Method to updtade user photo and name
     private void updateUserInfo(final String name, Uri pickedImageUri, final FirebaseUser currentUser){
         //Lo primero es subir la foto a Firebase Storage y guardar la referencia de la imagen.
-        StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("users_photos");
+        StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("profile_user_photos");
 
 
         if(pickedImageUri == null){

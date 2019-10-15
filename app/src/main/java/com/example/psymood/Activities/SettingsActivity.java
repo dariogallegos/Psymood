@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -62,10 +63,14 @@ public class SettingsActivity extends AppCompatActivity {
         settingsPhoto = findViewById(R.id.settingsPhoto);
         sign_out = findViewById(R.id.settings_sing_out);
         save_info_user = findViewById(R.id.settingsSave);
+        TextView settings_name_title = findViewById(R.id.settings_name_title);
+
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         initValuesOfForm(currentUser);
+        settings_name_title.setText(currentUser.getDisplayName());
+
 
         settingsPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,7 +130,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void updateInfoUserIntoFirebase(final String nameUser, Uri pickedImageUri , final FirebaseUser currentUser) {
 
-        StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("users_photos");
+        StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("profile_user_photos");
 
         if(pickedImageUri == null){
             pickedImageUri = getUriToDrawable(getApplicationContext(),R.drawable.default_photo_profile);
