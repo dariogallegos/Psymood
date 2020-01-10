@@ -15,12 +15,14 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.ExifInterface;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -88,6 +90,8 @@ public class CameraFragment extends Fragment {
 
     private StorageReference mStorage;
     private FirebaseUser currentUser;
+    private int counterOfPhoto;
+
 
     private String mCurrentPhotoPath;
 
@@ -127,78 +131,94 @@ public class CameraFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
+        //photo proof is taken
 
         //init firebase storage reference
         mStorage = FirebaseStorage.getInstance().getReference();
         //Firebase user authentication
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        counterOfPhoto = ApplicationPreferences.loadNumState(KEY_NUM_PHOTO);
 
         imgPhoto = view.findViewById(R.id.imgFoto);
         btn_camera = view.findViewById(R.id.btn_camera);
+
         textPicture = view.findViewById(R.id.textPicture);
         savePhoto = view.findViewById(R.id.savePhoto);
 
-        openCameraToTakePhotos();
-        btn_camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openCameraToTakePhotos();
-            }
-        });
+        if(counterOfPhoto >= 1){
+            Log.e("Dario","ya tiene una foto");
+            textPicture.setText(R.string.selfie_alredy_exist);
+            savePhoto.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.reg_btn_grey_light_style));
+            savePhoto.setTextColor(ContextCompat.getColor(getContext(),R.color.GreyMedium));
+            savePhoto.setEnabled(false);
+            btn_camera.setVisibility(View.INVISIBLE);
+        }else{
+            Log.e("foto","Aun no he subido ninguna foto");
+            openCameraToTakePhotos();
+            btn_camera.setVisibility(View.VISIBLE);
+            btn_camera.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openCameraToTakePhotos();
+                }
+            });
+        }
 
         controlToShowMessageAndUploadPhoto();
-
         return view;
     }
 
     private void controlToShowMessageAndUploadPhoto() {
 
-        //photo proof is taken
-        final int counterOfPhoto = ApplicationPreferences.loadNumState(KEY_NUM_PHOTO);
-
         if (counterOfPhoto < 1) {
             textPicture.setText(R.string.selfie_necesary);
+            savePhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (imgPhoto != null && counterOfPhoto < 1) {
+                        //Comprobamos si ya se ha subido una foto o no.
+                        textPicture.setText(R.string.selfie_task_completed);
+                        uploadPhoto();
+                        savePhoto.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.reg_btn_grey_light_style));
+                        savePhoto.setTextColor(ContextCompat.getColor(getContext(),R.color.GreyMedium));
+                        savePhoto.setEnabled(false);
+                    }
+                }
+            });
         } else {
             textPicture.setText(R.string.selfie_alredy_exist);
+            savePhoto.setEnabled(false);
         }
-
-        savePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (imgPhoto != null && counterOfPhoto < 1) {
-                    //Comprobamos si ya se ha subido una foto o no.
-                    uploadPhoto();
-                    textPicture.setText(R.string.selfie_task_completed);
-                }
-            }
-        });
     }
 
     private void uploadPhoto() {
+        textPicture.setText("Se esta subiendo ...");
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
         String currentDateandTime = sdf.format(new Date());
+        try {
+            final StorageReference filepath = mStorage.child("daily_user_photos").child(currentUser.getUid()).child(currentDateandTime);
+            File file = new File(mCurrentPhotoPath);
+            Log.e("Camera fragment", mCurrentPhotoPath);
+            Uri uri = Uri.fromFile(file);
+            filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-        final StorageReference filepath = mStorage.child("daily_user_photos").child(currentUser.getUid()).child(currentDateandTime);
-
-        File file = new File(mCurrentPhotoPath);
-        Log.e("Camera fragment", mCurrentPhotoPath);
-        Uri uri = Uri.fromFile(file);
-        filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        updateCounterPhoto();
-                        FirebaseInteractor.savePhotoInDatabase(uri.toString());
-                        mListener.showMessageFragmentInHome("La imagen se ha subido correctamente");
-                    }
-                });
-            }
-        });
-
+                    filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            textPicture.setText(R.string.selfie_task_completed);
+                            updateCounterPhoto();
+                            FirebaseInteractor.savePhotoInDatabase(uri.toString());
+                            mListener.showMessageFragmentInHome("La imagen se ha subido correctamente");
+                        }
+                    });
+                }
+            });
+        }catch (Exception e){
+            mListener.showMessageFragmentInHome("No se ha podido subir la imagen. Intentalo de nuevo :)");
+        }
     }
 
     private void updateCounterPhoto() {

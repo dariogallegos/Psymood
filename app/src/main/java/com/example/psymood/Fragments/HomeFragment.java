@@ -153,7 +153,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        //RecyclerView and Adpater
+        //RecyclerView and Adpater from Carousel
         recyclerViewTask.setHasFixedSize(true);
         recyclerViewTask.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         //recyclerViewTask.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -456,16 +456,16 @@ public class HomeFragment extends Fragment {
         listItemData3.add(new ItemData("Mucha", R.drawable.ic_diana_mucho));
 
         List<ItemData> listItemData4 = new ArrayList<>();
-        listItemData4.add(new ItemData("Triste4", R.drawable.ic_mood_unhappy));
-        listItemData4.add(new ItemData("Insatisfecho4", R.drawable.ic_mood_very_dissatisfied));
-        listItemData4.add(new ItemData("Normal4", R.drawable.ic_mood_neutro));
-        listItemData4.add(new ItemData("Satisfecho4", R.drawable.ic_mood_very_satisfied));
-        listItemData4.add(new ItemData("Feliz4", R.drawable.ic_mood_happy));
+        listItemData4.add(new ItemData("0 a 3 horas", R.drawable.ic_one_pillow));
+        listItemData4.add(new ItemData("3 a 6 horas", R.drawable.ic_two_pillow));
+        listItemData4.add(new ItemData("6 a 9 horas", R.drawable.ic_tree_pillow));
+        listItemData4.add(new ItemData("9 a 12 horas", R.drawable.ic_zz_pillow));
+        listItemData4.add(new ItemData("más de 12", R.drawable.ic_moon_pillow));
 
         itemGroupList.add(new ItemGroup("emociones", listItemData));
         itemGroupList.add(new ItemGroup("energía", listItemData2));
         itemGroupList.add(new ItemGroup("concentración", listItemData3));
-        itemGroupList.add(new ItemGroup("actividad", listItemData4));
+        itemGroupList.add(new ItemGroup("sueño", listItemData4));
         ApplicationPreferences.saveListGroup(KEY_STATES, itemGroupList);
     }
 }

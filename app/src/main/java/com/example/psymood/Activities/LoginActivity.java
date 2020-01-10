@@ -121,20 +121,13 @@ public class LoginActivity extends AppCompatActivity {
                         throw Objects.requireNonNull(task.getException());
                     } catch (FirebaseAuthWeakPasswordException e) {
                         userPassword.setError(getString(R.string.error_weak_password));
-                        //userPassword.requestFocus();
-
                     } catch (FirebaseAuthInvalidUserException e) {
                         userMail.setError(getString(R.string.error_invalid_email));
-                        //userMail.requestFocus();
-
                     } catch (FirebaseAuthInvalidCredentialsException e) {
                         userPassword.setError(getString(R.string.error_invalid_password));
-                        //userPassword.requestFocus();
-
                     } catch (Exception e) {
                         showMessage(e.getMessage());
                     }
-                    //showMessage(task.getException().toString());
                     buttonLogin.setVisibility(View.VISIBLE);
                 }
             }

@@ -107,5 +107,5 @@
     </string>
     <string name="selfie_necesary">Aún te falta el selfie</string>
     <string name="selfie_task_completed">Objetivo diario conseguido</string>
-    <string name="selfie_alredy_exist">Ya has subido un selfie</string>
+    <string name="selfie_alredy_exist"> Ya has subido un selfie, intentalo mañana!</string>
 </resources>
