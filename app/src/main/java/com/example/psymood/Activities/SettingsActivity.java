@@ -38,7 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private FirebaseUser currentUser;
     private EditText settingsName, settingsEmail;
-    private Button sign_out, save_info_user;
+    private Button sign_out, save_info_user,settings_download_data;
     private ImageView settingsPhoto;
 
     Uri photoProfileUri;
@@ -63,8 +63,9 @@ public class SettingsActivity extends AppCompatActivity {
         settingsPhoto = findViewById(R.id.settingsPhoto);
         sign_out = findViewById(R.id.settings_sing_out);
         save_info_user = findViewById(R.id.settingsSave);
-        TextView settings_name_title = findViewById(R.id.settings_name_title);
+        settings_download_data = findViewById(R.id.settings_download_data);
 
+        TextView settings_name_title = findViewById(R.id.settings_name_title);
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -95,7 +96,12 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-
+        settings_download_data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downloadData();
+            }
+        });
 
         sign_out.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +109,6 @@ public class SettingsActivity extends AppCompatActivity {
                 signOut();
             }
         });
-
     }
 
     private void openGallery() {
@@ -190,6 +195,11 @@ public class SettingsActivity extends AppCompatActivity {
             Log.e("SettingsActivity", photoProfileUri.toString());
             settingsPhoto.setImageURI(photoProfileUri);
         }
+    }
+
+    private void downloadData(){
+        Log.e("downloadData","He entrado en el downloadData del boton");
+        FirebaseInteractor.downloadData();
     }
 
 

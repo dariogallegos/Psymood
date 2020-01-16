@@ -69,4 +69,7 @@
 
         //Sparkline
         implementation 'com.github.majorkik:SparkLineLayout:1.0.1'
+
+        //OpenCSV file
+        implementation 'com.opencsv:opencsv:4.6'
     }

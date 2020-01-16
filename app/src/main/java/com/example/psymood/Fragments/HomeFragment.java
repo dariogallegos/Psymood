@@ -463,7 +463,7 @@ public class HomeFragment extends Fragment {
         listItemData4.add(new ItemData("más de 12", R.drawable.ic_moon_pillow));
 
         itemGroupList.add(new ItemGroup("emociones", listItemData));
-        itemGroupList.add(new ItemGroup("energía", listItemData2));
+        itemGroupList.add(new ItemGroup("energia", listItemData2));
         itemGroupList.add(new ItemGroup("concentración", listItemData3));
         itemGroupList.add(new ItemGroup("sueño", listItemData4));
         ApplicationPreferences.saveListGroup(KEY_STATES, itemGroupList);

@@ -10,6 +10,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.core.view.GravityCompat;

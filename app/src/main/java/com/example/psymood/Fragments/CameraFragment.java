@@ -194,7 +194,7 @@ public class CameraFragment extends Fragment {
     private void uploadPhoto() {
         textPicture.setText("Se esta subiendo ...");
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentDateandTime = sdf.format(new Date());
         try {
             final StorageReference filepath = mStorage.child("daily_user_photos").child(currentUser.getUid()).child(currentDateandTime);
@@ -211,7 +211,12 @@ public class CameraFragment extends Fragment {
                             textPicture.setText(R.string.selfie_task_completed);
                             updateCounterPhoto();
                             FirebaseInteractor.savePhotoInDatabase(uri.toString());
-                            mListener.showMessageFragmentInHome("La imagen se ha subido correctamente");
+
+                            try{
+                                mListener.showMessageFragmentInHome("La imagen se ha subido correctamente");
+                            }catch (Exception e){
+                                Log.e("TAG","Cambio de contexto, no se puede pintar el mensaje");
+                            }
                         }
                     });
                 }

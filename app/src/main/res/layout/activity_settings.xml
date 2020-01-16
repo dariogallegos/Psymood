@@ -228,6 +228,23 @@
                     android:textSize="17sp" />
 
                 <Button
+                    android:id="@+id/settings_download_data"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/reg_btn_pink_style"
+                    android:fontFamily="@font/heebo_bold"
+                    android:text="@string/download_data"
+                    android:textAllCaps="false"
+                    android:textColor="@color/White"
+                    android:textSize="16sp" />
+
+                <Button
                     android:id="@+id/settings_sing_out"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
@@ -239,7 +256,7 @@
                     android:layout_marginBottom="30dp"
                     android:background="@drawable/reg_btn_white_style"
                     android:fontFamily="@font/heebo_bold"
-                    android:text="Cerrar sesión"
+                    android:text="@string/log_out"
                     android:textAllCaps="false"
                     android:textColor="@color/GreenTask"
                     android:textSize="16sp" />

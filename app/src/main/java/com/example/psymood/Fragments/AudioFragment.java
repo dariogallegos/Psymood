@@ -50,6 +50,7 @@ import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -77,8 +78,8 @@ public class AudioFragment extends Fragment {
     private static final String KEY_COUNTER = "COUNTER";
     private static final String KEY_NUM_AUDIO = "NUM_AUDIO";
 
-
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
+    private static final String TAG = "audio_fragment";
 
     private OnFragmentInteractionListener mListener;
     private ImageButton playButton;
@@ -392,7 +393,7 @@ public class AudioFragment extends Fragment {
 
     private void uploadAudio() {
 
-        String audioStamp = new SimpleDateFormat("yyyyMMdd HH:mm:ss").format(new Date());
+        String audioStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         audioStamp+=".3gp";
 
         StorageMetadata metadata = new StorageMetadata.Builder()
@@ -405,24 +406,24 @@ public class AudioFragment extends Fragment {
 
         final StorageReference filepath = mStorage.child("daily_user_audios").child(currentUser.getUid()).child(audioStamp);
 
-
         filepath.putFile(uri,metadata).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        updateCounterAudio();
-                        FirebaseInteractor.saveAudioInDatabase(uri.toString());
-                        mListener.showMessageFragmentInHome("El audio se ha subido correctamente");
-                    }
-                });
-
-            }
+                    filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            updateCounterAudio();
+                            FirebaseInteractor.saveAudioInDatabase(uri.toString());
+                            try{
+                                mListener.showMessageFragmentInHome("El audio se ha subido correctamente");
+                            }catch (Exception e){
+                                Log.e("TAG","Cambio de contexto, no se puede pintar el mensaje");
+                            }
+                        }
+                    });
+                }
         });
-
-
     }
 
     private String createAudioFile() throws IOException {
