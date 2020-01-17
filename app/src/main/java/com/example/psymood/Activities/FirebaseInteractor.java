@@ -1,7 +1,6 @@
 package com.example.psymood.Activities;
 
 import android.os.Environment;
-import android.util.JsonReader;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -52,30 +51,36 @@ public class FirebaseInteractor {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 //String value = dataSnapshot.getValue();
-                Log.d("FirebaseInteractor", "Value is: " + "ha habido un cambio");
+                Log.d(TAG, "Value is: " + "ha habido un cambio");
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
-                Log.w("FirebaseInteractor", "Failed to read value.", error.toException());
+                Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
 
     }
 
-
-
-
-    //TODO comprobacion si el usuario ya tiene informacion o si se acaba de registrar y los campos estan vacios.
-    //TODO : chequear si ya existe, si es asi solo traemos la referencia, nada mas.
-
     public static void createInfoUserInDatabase() {
 
         myCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
-        InfoUser infoUser = new InfoUser(myCurrentUser.getDisplayName(),myCurrentUser.getEmail(),myCurrentUser.getPhotoUrl().toString());
-        myRef.child(myCurrentUser.getUid()).setValue(infoUser);
+        final InfoUser infoUser = new InfoUser(myCurrentUser.getDisplayName(),myCurrentUser.getEmail(),myCurrentUser.getPhotoUrl().toString());
 
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.child(myCurrentUser.getUid()).exists()){
+                    myRef.child(myCurrentUser.getUid()).setValue(infoUser);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG,"Se ha producido un error a leer de Database Realtime");
+            }
+        });
     }
 
     public static void saveAudioInDatabase(String urlAudio){
