@@ -1,12 +1,12 @@
 package com.example.psymood.Activities;
 
-import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.bumptech.glide.Glide;
+import com.example.psymood.Fragments.DatePickerFragment;
 import com.example.psymood.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,13 +43,12 @@ import static com.example.psymood.Activities.RegisterActivity.getUriToDrawable;
 public class SettingsActivity extends AppCompatActivity {
 
     private FirebaseUser currentUser;
-    private EditText settingsName, settingsEmail;
+    private EditText settingsName, settingsEmail, settingsCalendar;
     private Button sign_out, save_info_user,settings_download_data;
     private ImageView settingsPhoto;
-    private RadioButton genderButton;
     private RadioGroup gender_options;
     private String gender = "";
-    private static DatabaseReference myRef;
+    private String selectedDate = "";
 
     Uri photoProfileUri;
     private static final int PERMISSION_CODE = 1;
@@ -73,6 +74,7 @@ public class SettingsActivity extends AppCompatActivity {
         save_info_user = findViewById(R.id.settingsSave);
         settings_download_data = findViewById(R.id.settings_download_data);
         gender_options = findViewById(R.id.gender_options);
+        settingsCalendar = findViewById(R.id.settingsCalendar);
 
         TextView settings_name_title = findViewById(R.id.settings_name_title);
 
@@ -81,6 +83,16 @@ public class SettingsActivity extends AppCompatActivity {
         initValuesOfForm(currentUser);
         settings_name_title.setText(currentUser.getDisplayName());
 
+        settingsCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()){
+                    case R.id.settingsCalendar:
+                        showDatePickerDialog();
+                        break;
+                }
+            }
+        });
 
         settingsPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +118,10 @@ public class SettingsActivity extends AppCompatActivity {
                 checkGender();
                 if (gender != null) {
                     storeGender(gender);
+                }
+
+                if (selectedDate != null) {
+                    storeCalendar(selectedDate);
                 }
             }
         });
@@ -133,6 +149,19 @@ public class SettingsActivity extends AppCompatActivity {
             Log.e("Gender:male", "Gender is female");
             gender = "female";
         }
+    }
+
+    private void showDatePickerDialog() {
+        DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                // +1 because January is zero
+                selectedDate = day + " / " + (month+1) + " / " + year;
+                settingsCalendar.setText(selectedDate);
+            }
+        });
+
+        newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
     private void openGallery() {
@@ -228,6 +257,11 @@ public class SettingsActivity extends AppCompatActivity {
     private void storeGender(final String gender){
         Log.e("storingGender","Storing gender in database");
         FirebaseInteractor.saveGenderInDatabase(gender);
+    }
+
+    private void storeCalendar(final String date){
+        Log.e("storingCalendar","Storing calendar in database");
+        FirebaseInteractor.saveDateInDatabase(date);
     }
 
     private void signOut() {

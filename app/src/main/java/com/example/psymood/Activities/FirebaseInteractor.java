@@ -112,6 +112,11 @@ public class FirebaseInteractor {
         myStateRef.setValue(gender);
     }
 
+    public static void saveDateInDatabase(String date){
+        DatabaseReference myStateRef =  myRef.child(myCurrentUser.getUid()).child("birthdate");
+        myStateRef.setValue(date);
+    }
+
     public static void downloadData(){
         myCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference database = myRef.child(myCurrentUser.getUid());

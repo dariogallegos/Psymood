@@ -167,7 +167,10 @@
                     android:drawableStart="@drawable/ic_calendar"
                     android:drawablePadding="10dp"
                     android:elevation="2dp"
-                    android:inputType="datetime" />
+                    android:inputType="date"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:maxLines="1"/>
 
                 <TextView
                     android:id="@+id/textView17"
