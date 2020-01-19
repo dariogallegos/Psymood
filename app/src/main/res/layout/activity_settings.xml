@@ -189,25 +189,35 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <RadioButton
-                        android:layout_width="120dp"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:buttonTint="@color/GreenTask"
-                        android:fontFamily="@font/muli_light"
+                    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/gender_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Hombre" />
+                        android:orientation="horizontal">
 
-                    <RadioButton
-                        android:layout_width="120dp"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:buttonTint="@color/GreenTask"
-                        android:fontFamily="@font/muli_light"
-                        android:gravity="center"
-                        android:text="Mujer" />
+                        <RadioButton
+                            android:id="@+id/radio_male"
+                            android:layout_width="120dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:buttonTint="@color/GreenTask"
+                            android:fontFamily="@font/muli_light"
+                            android:gravity="center"
+                            android:text="Hombre" />
+
+                        <RadioButton
+                            android:id="@+id/radio_female"
+                            android:layout_width="120dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:buttonTint="@color/GreenTask"
+                            android:fontFamily="@font/muli_light"
+                            android:gravity="center"
+                            android:text="Mujer" />
+                    </RadioGroup>
                 </LinearLayout>
 
                 <Button

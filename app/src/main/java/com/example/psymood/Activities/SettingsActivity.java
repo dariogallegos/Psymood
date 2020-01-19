@@ -1,5 +1,6 @@
 package com.example.psymood.Activities;
 
+import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -19,6 +20,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.bumptech.glide.Glide;
 import com.example.psymood.R;
@@ -28,6 +31,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -40,6 +44,10 @@ public class SettingsActivity extends AppCompatActivity {
     private EditText settingsName, settingsEmail;
     private Button sign_out, save_info_user,settings_download_data;
     private ImageView settingsPhoto;
+    private RadioButton genderButton;
+    private RadioGroup gender_options;
+    private String gender = "";
+    private static DatabaseReference myRef;
 
     Uri photoProfileUri;
     private static final int PERMISSION_CODE = 1;
@@ -64,6 +72,7 @@ public class SettingsActivity extends AppCompatActivity {
         sign_out = findViewById(R.id.settings_sing_out);
         save_info_user = findViewById(R.id.settingsSave);
         settings_download_data = findViewById(R.id.settings_download_data);
+        gender_options = findViewById(R.id.gender_options);
 
         TextView settings_name_title = findViewById(R.id.settings_name_title);
 
@@ -93,6 +102,11 @@ public class SettingsActivity extends AppCompatActivity {
                     updateInfoUserIntoFirebase(nameUser, photoProfileUri,currentUser);
                 else
                     Toast.makeText(getApplicationContext(), "Por favor revisa lo campos", Toast.LENGTH_SHORT).show();
+
+                checkGender();
+                if (gender != null) {
+                    storeGender(gender);
+                }
             }
         });
 
@@ -109,6 +123,16 @@ public class SettingsActivity extends AppCompatActivity {
                 signOut();
             }
         });
+    }
+
+    private void checkGender(){
+        if (gender_options.getCheckedRadioButtonId() ==  R.id.radio_male){
+            Log.e("Gender:male", "Gender is male");
+            gender = "male";
+        } else{
+            Log.e("Gender:male", "Gender is female");
+            gender = "female";
+        }
     }
 
     private void openGallery() {
@@ -169,7 +193,6 @@ public class SettingsActivity extends AppCompatActivity {
                 });
             }
         });
-
     }
 
     private void showMessage(String message) {
@@ -202,6 +225,10 @@ public class SettingsActivity extends AppCompatActivity {
         FirebaseInteractor.downloadData();
     }
 
+    private void storeGender(final String gender){
+        Log.e("storingGender","Storing gender in database");
+        FirebaseInteractor.saveGenderInDatabase(gender);
+    }
 
     private void signOut() {
         FirebaseAuth.getInstance().signOut();

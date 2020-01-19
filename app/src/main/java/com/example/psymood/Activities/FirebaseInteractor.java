@@ -107,6 +107,11 @@ public class FirebaseInteractor {
         myPhotoRef.setValue(urlPhoto);
     }
 
+    public static void saveGenderInDatabase(String gender){
+        DatabaseReference myStateRef =  myRef.child(myCurrentUser.getUid()).child("gender");
+        myStateRef.setValue(gender);
+    }
+
     public static void downloadData(){
         myCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference database = myRef.child(myCurrentUser.getUid());

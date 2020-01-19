@@ -14,7 +14,7 @@
         android:textSize="22sp"
         android:fontFamily="@font/muli_bold"
         android:layout_centerInParent="true"
-        android:text="V1.0"
+        android:text="V1.0.0"
         />
 
 </RelativeLayout>
