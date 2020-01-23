@@ -1,5 +1,6 @@
 package com.example.psymood.Fragments;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -278,7 +279,6 @@ public class HomeFragment extends Fragment {
         InfoUser infoUser = ApplicationPreferences.loadInfoUser(KEY_ID_USER);
         defaultTaskList();
 
-        //TODO FALLO DE LA PRIMERA VUELTA
         if (infoUser != null && infoUser.getEmailUser().equals(currentUser.getEmail()) && isEqualsDayToLastDay()) {
             if (ApplicationPreferences.loadListGroup(KEY_STATES) != null) {
                 itemGroupList = ApplicationPreferences.loadListGroup(KEY_STATES);
@@ -422,11 +422,10 @@ public class HomeFragment extends Fragment {
 
     private void defaultTaskList() {
         listItemTask = new ArrayList<>();
-        listItemTask.add(new ItemTask("Hey, ¿como te encuentras?", "4", R.color.GreenTask, R.drawable.ic_task_face, R.id.nav_add));
-        listItemTask.add(new ItemTask("Prueba a hacerte un selfie", "1", R.color.PinkTask, R.drawable.ic_task_camera, R.id.nav_camera));
-        listItemTask.add(new ItemTask("¿Y si me dices algo?", "1", R.color.PurpleTask, R.drawable.ic_task_mic, R.id.nav_audio));
+        listItemTask.add(new ItemTask("¿Cual es tu estado de animo?", "5", R.color.GreenTask, R.drawable.ic_task_face, R.id.nav_add));
+        listItemTask.add(new ItemTask("Haz un selfie o una foto", "1", R.color.PinkTask, R.drawable.ic_task_camera, R.id.nav_camera));
+        listItemTask.add(new ItemTask("Lee una de las frase", "1", R.color.PurpleTask, R.drawable.ic_task_mic, R.id.nav_audio));
         listItemTask.add(new ItemTask("Proximamente se podra grabar", "0", R.color.YellowTask, R.drawable.ic_task_video, -1));
-
     }
 
 
@@ -462,10 +461,28 @@ public class HomeFragment extends Fragment {
         listItemData4.add(new ItemData("9 a 12 horas", R.drawable.ic_zz_pillow));
         listItemData4.add(new ItemData("más de 12", R.drawable.ic_moon_pillow));
 
+        List<ItemData> listItemData5 = new ArrayList<>();
+        listItemData5.add(new ItemData("Nada",R.drawable.ic_bottle_empty));
+        listItemData5.add(new ItemData("Poco", R.drawable.ic_bottle_short));
+        listItemData5.add(new ItemData("Suficiente", R.drawable.ic_bottle_long));
+        listItemData5.add(new ItemData("Normal", R.drawable.ic_bottle_two_cup));
+        listItemData5.add(new ItemData("Bastante", R.drawable.ic_bottle_beer_cup));
+        listItemData5.add(new ItemData("Mucho", R.drawable.ic_bottle_two_beer));
+        listItemData5.add(new ItemData("Demasiado", R.drawable.ic_bottle_tree_beer));
+
+        List<ItemData> listItemData6 = new ArrayList<>();
+        listItemData6.add(new ItemData("Nada", R.drawable.ic_drugs_empty));
+        listItemData6.add(new ItemData("Poco", R.drawable.ic_drugs_little));
+        listItemData6.add(new ItemData("Medio", R.drawable.ic_drugs_medium));
+        listItemData6.add(new ItemData("Mucho", R.drawable.ic_drugs_high));
+        listItemData6.add(new ItemData("Demasiado", R.drawable.ic_drugs_full));
+
         itemGroupList.add(new ItemGroup("emociones", listItemData));
         itemGroupList.add(new ItemGroup("energia", listItemData2));
         itemGroupList.add(new ItemGroup("concentración", listItemData3));
         itemGroupList.add(new ItemGroup("sueño", listItemData4));
+        itemGroupList.add(new ItemGroup("Alcohol",listItemData5));
+        itemGroupList.add(new ItemGroup("Drogas",listItemData6));
         ApplicationPreferences.saveListGroup(KEY_STATES, itemGroupList);
     }
 }

@@ -70,3 +70,8 @@ Se van a utilizar tres ramas principales, siguiendo la metodología [git-flow][g
 A la hora de realizar un nuevo desarrollo para una nueva funcionalidad o un evolutivo, se deberá crear una nueva rama desde la rama _dev_.
 
 Se seguirá la máxima _una rama por cada funcionalidad_. Esto quiere decir que en cada una de las ramas solo se deberá incluir las modificaciones de una única característica o servicio. Si, por ejemplo, tuviéramos una petición extensa con varias funcionalidades, se deberán crear tantas ramas por cada una de ellas. Véase [_A successful Git branching model_](http://nvie.com/posts/a-successful-git-branching-model/).
+
+
+## Descarga el APK
+
+Para poder instalarte la aplicación, basta con acceder al siguiente enlace de google Drive. Dentro, se encuentra el archivo Psymood.apk. Para poder instalarlo es necesario activar la opción **_descargar desde orígenes desconocidos_** en el dispositivo.  Ir [_Psymood apk_](https://drive.google.com/drive/u/0/folders/1alD8T4vmcb-NbdRxcZJtmw0qEl9qhqjz).

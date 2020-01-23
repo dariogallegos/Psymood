@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -26,10 +27,12 @@ import android.widget.RadioGroup;
 
 import com.bumptech.glide.Glide;
 import com.example.psymood.Fragments.DatePickerFragment;
+import com.example.psymood.Helpers.SnackbarHelper;
 import com.example.psymood.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -98,12 +101,14 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= 23) {
-                    checkAndRequestForPermission();
+                    checkAndRequestForPermission("photo");
                 } else {
                     openGallery();
                 }
             }
         });
+
+        //TODO CORREGIR LA LINEA 119
 
         save_info_user.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,33 +170,31 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void openGallery() {
-        //TODO: open gallery intent and wait for user pick an image
-
         Intent intentGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(intentGallery, PICK_IMAGE);
     }
 
 
-    private void checkAndRequestForPermission() {
+    private void checkAndRequestForPermission(String action) {
 
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(SettingsActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                Toast.makeText(getApplicationContext(), "Permitir a Psymood acceder a la galeria?", Toast.LENGTH_SHORT).show();
-            } else {
-                ActivityCompat.requestPermissions(SettingsActivity.this, PERMISSIONS_STORAGE, PERMISSION_CODE);
-            }
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+            || ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(SettingsActivity.this,PERMISSIONS_STORAGE,PERMISSION_CODE);
         } else {
-            openGallery();
+            if(action.equals("photo")){
+                openGallery();
+            }else{
+                FirebaseInteractor.downloadData();
+            }
         }
     }
-
 
     private void updateInfoUserIntoFirebase(final String nameUser, Uri pickedImageUri , final FirebaseUser currentUser) {
 
         StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("profile_user_photos");
 
         if(pickedImageUri == null){
-            pickedImageUri = getUriToDrawable(getApplicationContext(),R.drawable.default_photo_profile);
+            pickedImageUri = getUriToDrawable(getApplicationContext(),R.drawable.ic_astronaut_profile_grey);
         }
         final StorageReference imageFilePath = mStorage.child(pickedImageUri.getLastPathSegment());
 
@@ -214,7 +217,7 @@ public class SettingsActivity extends AppCompatActivity {
                             public void onComplete(Task<Void> task) {
                                 if(task.isSuccessful()){
                                     //user info update sucessfully
-                                    showMessage("Register Complete");
+                                    showMessageInSettings("Se ha guardado correctamente");
                                 }
                             }
                         });
@@ -250,9 +253,22 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void downloadData(){
-        Log.e("downloadData","He entrado en el downloadData del boton");
-        FirebaseInteractor.downloadData();
+        Log.e("FirebaseInteractor","He entrado en el downloadData del boton");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                FirebaseInteractor.downloadData();
+                showMessageInSettings("Se ha generado el CSV");
+            }else{
+                checkAndRequestForPermission("csv");
+            }
+        } else {
+            FirebaseInteractor.downloadData();
+            showMessageInSettings("Se ha generado el CSV");
+        }
+
     }
+
 
     private void storeGender(final String gender){
         Log.e("storingGender","Storing gender in database");
@@ -269,5 +285,16 @@ public class SettingsActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void showMessageInSettings(String message) {
+        try {
+            View view = this.findViewById(R.id.settings_activity);
+            Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+            SnackbarHelper.configSnackbar(view.getContext(), snackbar);
+            snackbar.show();
+        }catch (Exception e){
+            Log.e("SettingsActivity","Error el mostrar el mensaje de CSV");
+        }
     }
 }

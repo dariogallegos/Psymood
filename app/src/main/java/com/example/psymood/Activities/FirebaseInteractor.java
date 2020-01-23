@@ -167,6 +167,7 @@ public class FirebaseInteractor {
     private static void generateCSVInDevice(InfoUser infoUser, JSONObject audios, JSONObject states, JSONObject photos) {
         String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/datos.csv"); // Here csv file name is MyCsvFile.csv
 
+        Log.e(TAG,csv);
         CSVWriter writer = null;
         try {
             writer = new CSVWriter(new FileWriter(csv));

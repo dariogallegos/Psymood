@@ -167,7 +167,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         if(pickedImageUri == null){
-            pickedImageUri = getUriToDrawable(getApplicationContext(),R.drawable.default_photo_profile);
+            pickedImageUri = getUriToDrawable(getApplicationContext(),R.drawable.ic_astronaut_profile_grey);
         }
 
         //Guardamos la referencia en imafeFilePath

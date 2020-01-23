@@ -2,7 +2,6 @@ package com.example.psymood.Fragments;
 
 
 import android.Manifest;
-import android.animation.Animator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -23,7 +22,6 @@ import com.example.psymood.Helpers.CountUpTimer;
 import com.example.psymood.Preferences.ApplicationPreferences;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -32,7 +30,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 
 import android.view.View;
-import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -50,7 +47,7 @@ import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.Console;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -67,11 +64,15 @@ import java.util.concurrent.TimeUnit;
 public class AudioFragment extends Fragment {
 
     private String[] sentencesUser = new String[]{
-            "Todos los que crecimos fuimos niños, pero pocos lo recuerdan",
-            "Facilita la identificacion de especies desconocidas",
-            "Cuántos más palos me da el mundo... ¡más limonadas que me tomo!",
-            "Todo depende de lo que este dispuesto a dar.",
-            "No es mío, ya me gustaría a mi que lo fuera."
+            "Todos fuimos niños, pero pocos lo recuerdan.",
+            "Facilita la identificación de especies desconocidas.",
+            "Me parecío un buen documental, lástima que el sonido no fuera bueno.",
+            "Todo depende de lo que estés dispuesto a dar.",
+            "La duda es uno de los nombres de la inteligencia",
+            "La poesía es un arma cargada de futuro.",
+            "La perfección es una pulida colección de errores.",
+            "La adversidad revela el genio, la prosperidad lo oculta.",
+            "Es siempre de otros poetas que un alumno adquiere su oficio."
     };
 
 
@@ -79,7 +80,7 @@ public class AudioFragment extends Fragment {
     private static final String KEY_NUM_AUDIO = "NUM_AUDIO";
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
-    private static final String TAG = "audio_fragment";
+    private static final String TAG = "Audiofragment";
 
     private OnFragmentInteractionListener mListener;
     private ImageButton playButton;
@@ -140,7 +141,7 @@ public class AudioFragment extends Fragment {
         animationView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("AudioFragment", "clicked");
+                Log.e(TAG, "clicked");
 
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED &&
@@ -177,7 +178,7 @@ public class AudioFragment extends Fragment {
             mRecorder = null;
         }
 
-        Log.e("AudioFragment", "he vuelto a entrar en le fragmnet");
+        Log.e(TAG, "he vuelto a entrar en le fragmnet");
     }
 
     private String selectSentenceToShow() {
@@ -223,14 +224,12 @@ public class AudioFragment extends Fragment {
                     mStartRecording = !mStartRecording;
 
                 } else {
-
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                     Toast.makeText(getContext(), "permission denied", Toast.LENGTH_LONG).show();
                 }
                 return;
             }
-
             // other 'case' lines to check for other
             // permissions this app might request
         }
@@ -261,9 +260,6 @@ public class AudioFragment extends Fragment {
         String time = convertLongToTimeString(millis);
         timeAudio.setText(time);
 
-
-        //Boton de play
-        //TODO si le doy una vez se ejecuta, si le vuelvo a dar lo pauso.
         playButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -445,12 +441,11 @@ public class AudioFragment extends Fragment {
 
         int numAudios = ApplicationPreferences.loadNumState(KEY_NUM_AUDIO);
         if (numAudios < 1) {
-            int cont = ApplicationPreferences.loadNumState(KEY_COUNTER) + 3;
+            int cont = ApplicationPreferences.loadNumState(KEY_COUNTER) + 2;
             ApplicationPreferences.saveNumState(KEY_NUM_AUDIO, 1);
             ApplicationPreferences.saveNumState(KEY_COUNTER, cont);
         }
     }
-
 
     //Play audio
     private void onPlay(boolean start) {
@@ -480,7 +475,6 @@ public class AudioFragment extends Fragment {
 
     private void finishedPlaying() {
 
-        //TODO Error al intentar reproducir un audio que ya esta en ejecucion.
         if (!mStartPlaying) {
             player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
@@ -492,7 +486,6 @@ public class AudioFragment extends Fragment {
         }
 
     }
-
 
     @Override
     public void onDestroyView() {
@@ -509,7 +502,6 @@ public class AudioFragment extends Fragment {
 
     //Implements function fragment
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void showMessageFragmentInHome(String message);
     }
 }

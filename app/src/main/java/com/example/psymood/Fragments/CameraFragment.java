@@ -230,7 +230,7 @@ public class CameraFragment extends Fragment {
 
         int numAudios = ApplicationPreferences.loadNumState(KEY_NUM_PHOTO);
         if (numAudios < 1) {
-            int cont = ApplicationPreferences.loadNumState(KEY_COUNTER) + 3;
+            int cont = ApplicationPreferences.loadNumState(KEY_COUNTER) + 2;
             ApplicationPreferences.saveNumState(KEY_NUM_PHOTO, 1);
             ApplicationPreferences.saveNumState(KEY_COUNTER, cont);
         }
